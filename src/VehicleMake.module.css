@@ -1,0 +1,14 @@
+.makeSection{
+    border: 1px solid black;
+    margin-top: 1em;
+    margin-right: auto;
+    margin-left: auto;
+    width: 50%;
+
+    padding: .5em;
+}
+
+.makeName {
+    font-family: cursive;
+}
+
