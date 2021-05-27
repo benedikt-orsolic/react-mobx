@@ -1,18 +1,14 @@
 import './App.css';
-import { VehicleMake } from './VehicleMake';
-
-import { vehicleMakeList } from './vehicleList';
+import { MakeList } from './MakeList';
 
 function App() {
 
   return (
     
     <div>
-      {vehicleMakeList.map(
-        el =>{ 
-          return (<VehicleMake id={el.id} />)
-        }
-      )}
+
+      <MakeList />
+
     </div>
   );
 }
