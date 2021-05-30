@@ -19,7 +19,6 @@ export class NewVehicleMakeInput extends Component {
             name: this.state.value,
             abbr: '',
         })
-        console.log('A name was submitted: ' + this.state.value);
         event.preventDefault();
       }
     
