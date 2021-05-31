@@ -16,8 +16,8 @@ function App() {
 
     <Switch>
       <Route path="/make-list" component={MakeList} />
-      <Route path="/" component={MakeList} />
       <Route path="/make/:id" component={MakePage} />
+      <Route path="/" component={MakeList} />
     </Switch>
 
   </div>);
