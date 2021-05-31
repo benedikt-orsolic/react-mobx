@@ -1,4 +1,4 @@
-import { observable, autorun } from 'mobx';
+import { observable } from 'mobx';
 
 export var vehicleMakeList = observable([
     { id: 1, name: 'Jaguar', abr: 'Jaguar' },
@@ -6,6 +6,11 @@ export var vehicleMakeList = observable([
     { id: 3, name: 'BMW', abr:'BMW' },
 ]);
 
-autorun(()=>{
-    console.log(vehicleMakeList);
-});
+export var vehicleModelList = observable ([
+    { id: 1, makeId: 1, name: 'F-Type' },
+    { id: 2, makeId: 2, name: 'Clio' },
+    { id: 3, makeId: 2, name: 'Twingo' },
+    { id: 5, makeId: 2, name: 'Megan' },
+    { id: 6, makeId: 3, name: 'X3' },
+    { id: 7, makeId: 3, name: 'Z4' },
+])

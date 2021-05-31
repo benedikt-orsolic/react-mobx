@@ -1,16 +1,26 @@
 import './App.css';
 import { MakeList } from './MakeList';
+import { MakePage } from './MakePage';
+
+import {
+  Route,
+  Switch,
+  Link
+} from 'react-router-dom';
 
 function App() {
 
-  return (
-    
-    <div>
+  return (<div>
 
-      <MakeList />
+    <Link to='/make-list' >Make List</Link>
 
-    </div>
-  );
+    <Switch>
+      <Route path="/make-list" component={MakeList} />
+      <Route path="/" component={MakeList} />
+      <Route path="/make/:id" component={MakePage} />
+    </Switch>
+
+  </div>);
 }
 
 export default App;
