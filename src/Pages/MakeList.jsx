@@ -1,9 +1,9 @@
-import { NewVehicleMakeInput } from './NewVehicleMakeInput';
+import { NewVehicleMakeInput } from '../Components/NewVehicleMakeInput';
 
 import { observer } from 'mobx-react';
 
 
-import { vehicleMakeList } from './vehicleMakeList';
+import { vehicleMakeList } from '../Common/vehicleMakeList';
 
 import styles from './VehicleMake.module.css';
 import React from 'react';

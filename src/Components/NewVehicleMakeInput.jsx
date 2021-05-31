@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { vehicleMakeList } from './vehicleMakeList';
+import { vehicleMakeList } from '../Common/vehicleMakeList';
 
 export class NewVehicleMakeInput extends Component {
 

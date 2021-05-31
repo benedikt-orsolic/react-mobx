@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
-import { vehicleMakeList, vehicleModelList } from './vehicleMakeList';
+import { vehicleMakeList, vehicleModelList } from '../Common/vehicleMakeList';
 
 import styles from './VehicleMake.module.css';
 
@@ -11,7 +11,7 @@ const List = observer ((props) => {
         return (
             <ul>{
                 vehicleModelList.map( (el) => {
-                    if( Number(el.makeId) == Number(props.makeId)) return <li>{el.name}</li>;
+                    if( Number(el.makeId) === Number(props.makeId)) return <li>{el.name}</li>;
                 })
             }</ul>
         );
@@ -31,7 +31,7 @@ export class MakePage extends React.Component {
 
                 <h2>{
                     vehicleMakeList.map( (el) => {
-                        if( Number(el.id) == Number(this.id)) return el.name;
+                        if( Number(el.id) === Number(this.id)) return el.name;
                     })
                 }</h2>
                 <List makeId={this.id} />

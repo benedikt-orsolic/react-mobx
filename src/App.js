@@ -1,6 +1,6 @@
 import './App.css';
-import { MakeList } from './MakeList';
-import { MakePage } from './MakePage';
+import { MakeList } from './Pages/MakeList';
+import { MakePage } from './Pages/MakePage';
 
 import {
   Route,
