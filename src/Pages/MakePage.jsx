@@ -1,21 +1,45 @@
 import React from 'react';
-import { observer } from 'mobx-react';
+
+import { ModelList } from '../Components/ModelList';
 
 import { vehicleMakeList, vehicleModelList } from '../Common/vehicleMakeList';
 
 import styles from './VehicleMake.module.css';
 
 
-/* Could not figure out how to put observer inside a class */
-const List = observer ((props) => {
+class ModelInput extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {value: ''};
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+    
+    handleChange(event) {    
+        this.setState({value: event.target.value});  
+    }
+    handleSubmit(event) {
+        vehicleModelList.push({
+            id: vehicleModelList.length,
+            makeId: this.props.makeId,
+            name: this.state.value,
+        })
+        event.preventDefault();
+      }
+    
+      render() {
         return (
-            <ul>{
-                vehicleModelList.map( (el) => {
-                    if( Number(el.makeId) === Number(props.makeId)) return <li>{el.name}</li>;
-                })
-            }</ul>
+            <form onSubmit={this.handleSubmit}>        
+            <label>
+                Model name:
+                <input type="text" value={this.state.value} onChange={this.handleChange} />        
+            </label>
+            <input type="submit" value="Submit" />
+          </form>
         );
-})
+      }
+}
 
 export class MakePage extends React.Component {
 
@@ -34,7 +58,8 @@ export class MakePage extends React.Component {
                         if( Number(el.id) === Number(this.id)) return el.name;
                     })
                 }</h2>
-                <List makeId={this.id} />
+                <ModelInput makeId={this.id} />
+                <ModelList makeId={this.id} />
             </section>
         )
     }
