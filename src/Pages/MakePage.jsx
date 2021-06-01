@@ -56,6 +56,7 @@ export class MakePage extends React.Component {
                 <h2>{
                     vehicleMakeList.map( (el) => {
                         if( Number(el.id) === Number(this.id)) return el.name;
+                        return null;
                     })
                 }</h2>
                 <ModelInput makeId={this.id} />

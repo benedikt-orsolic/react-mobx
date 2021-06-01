@@ -18,7 +18,7 @@ const List = observer (() => {
     return (
             vehicleMakeList.map(el => {
                 const [ showList, setShowList ] = useState( false );
-                return( <div>
+                return( <div key={el.id}>
                     <h2 className={styles.makeName}>{el.name}</h2>
                     <Link to={'make/' + el.id} >{el.name}</Link>
                     <input type="checkbox" onChange={() => setShowList(!showList)}></input>
