@@ -1,6 +1,7 @@
 import './App.css';
 import { MakeList } from './Pages/MakeList';
 import { MakePage } from './Pages/MakePage';
+import { ModelPage } from './Pages/ModelPage';
 
 import {
   Route,
@@ -17,6 +18,7 @@ function App() {
     <Switch>
       <Route path="/make-list" component={MakeList} />
       <Route path="/make/:id" component={MakePage} />
+      <Route path="/model/:id" component={ModelPage} />
       <Route path="/" component={MakeList} />
     </Switch>
 
