@@ -18,7 +18,7 @@ class VehicleMakeList {
 
     addMake(name, abr) {
         this.list.push({
-            id: this.list.length,
+            id: this.list[this.list.length - 1].id + 1,
             name: name,
             abr: abr,
         })

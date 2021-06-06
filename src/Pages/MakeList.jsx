@@ -41,6 +41,7 @@ class MakeListStateStore {
         makeObservable(this, {
             toggleList: observable,
             changeToggle: action,
+            initKey: action,    
         })
     }
 
