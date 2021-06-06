@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { ModelList } from '../Components/ModelList';
-
-import { vehicleMakeList, vehicleModelList } from '../Common/vehicleMakeList';
+import { MakeStore } from '../Common/MakeStore';
+import { ModelStore } from '../Common/ModelStore';
 
 import styles from './VehicleMake.module.css';
 
@@ -20,11 +20,7 @@ class ModelInput extends React.Component {
         this.setState({value: event.target.value});  
     }
     handleSubmit(event) {
-        vehicleModelList.push({
-            id: vehicleModelList.length,
-            makeId: this.props.makeId,
-            name: this.state.value,
-        })
+        ModelStore.addNewModel(this.props.makeId, this.state.value);
         event.preventDefault();
       }
     
@@ -54,7 +50,7 @@ export class MakePage extends React.Component {
             <section className={styles.makeSection}>
 
                 <h2>{
-                    vehicleMakeList.map( (el) => {
+                    MakeStore.list.map( (el) => {
                         if( Number(el.id) === Number(this.id)) return el.name;
                         return null;
                     })

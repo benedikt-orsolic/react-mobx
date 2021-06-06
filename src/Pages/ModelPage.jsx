@@ -1,5 +1,7 @@
 import React from 'react';
-import { vehicleMakeList, vehicleModelList } from '../Common/vehicleMakeList';
+
+import { MakeStore } from '../Common/MakeStore';
+import { ModelStore } from '../Common/ModelStore';
 
 import styles from './VehicleMake.module.css';
 
@@ -13,8 +15,8 @@ export class ModelPage extends React.Component {
 
     render() {
 
-        let thisModel = vehicleModelList.find(el=>Number(el.id) === Number(this.id));
-        let thisModelMake = vehicleMakeList.find(el=>Number(el.id) === Number(thisModel.makeId));
+        let thisModel = ModelStore.list.find(el=>Number(el.id) === Number(this.id));
+        let thisModelMake = MakeStore.list.find(el=>Number(el.id) === Number(thisModel.makeId));
         return(<section className={styles.makeSection}>
             <h2>{thisModel.name}</h2>
             <section>

@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { vehicleModelList } from './vehicleList';
+import { ModelStore } from '../Common/ModelStore';
 
 export class VehicleModel extends Component {
 
@@ -7,7 +7,7 @@ export class VehicleModel extends Component {
     let id=this.props.id;
     return(
         <div class="vehicleMake" id={id}>
-            {vehicleModelList.map(el => {
+            {ModelStore.list.map(el => {
                 if(el.id === id){
                     return(
                         <h3>{el.name}</h3>

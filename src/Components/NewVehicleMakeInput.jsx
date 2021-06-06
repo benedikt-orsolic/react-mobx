@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { vehicleMakeList } from '../Common/vehicleMakeList';
+import { MakeStore } from '../Common/MakeStore';
 
 export class NewVehicleMakeInput extends Component {
 
@@ -13,12 +13,9 @@ export class NewVehicleMakeInput extends Component {
     handleChange(event) {    
         this.setState({value: event.target.value});  
     }
+    
     handleSubmit(event) {
-        vehicleMakeList.push({
-            id: 0,
-            name: this.state.value,
-            abbr: '',
-        })
+        MakeStore.addMake(this.state.value);
         event.preventDefault();
       }
     
