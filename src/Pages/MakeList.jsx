@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer } from 'mobx-react';
+import { observer, } from 'mobx-react';
 import { Link } from 'react-router-dom';
 
 import { NewVehicleMakeInput } from '../Components/NewVehicleMakeInput';
@@ -19,10 +19,13 @@ export const MakeList = observer (() => {
             {
             MakeStore.list.map(el => {
                 return( <div key={el.id}>
+
                     <h2 className={styles.makeName}>{el.name}</h2>
                     <Link to={'make/' + el.id} >{el.name}</Link>
-                    <input type="checkbox" onChange={() => MakeListState.changeShowListToggle()}></input>
-                    {MakeListState.showListToggle ? <ModelList makeId={el.id} /> : null}
+
+                    {MakeListState.initKey(el.id)}
+                    <input type="checkbox" onChange={() => MakeListState.changeToggle(el.id)}></input>
+                    {MakeListState.toggleList[el.id] ? <ModelList makeId={el.id} /> : null}
                 </div>)
             })
             }
@@ -32,17 +35,23 @@ export const MakeList = observer (() => {
 
 class MakeListStateStore {
 
-    showListToggle = false;
+    toggleList = [];
 
     constructor() {
         makeObservable(this, {
-            showListToggle: observable,
-            changeShowListToggle: action,
+            toggleList: observable,
+            changeToggle: action,
         })
     }
 
-    changeShowListToggle() {
-        this.showListToggle = !this.showListToggle;
+    changeToggle(key) {
+        this.toggleList[key] = !this.toggleList[key];
+    }
+
+    initKey(key) {
+        while(this.toggleList.length <= key) {
+            this.toggleList[this.toggleList.length] = false;
+        }
     }
 }
 
