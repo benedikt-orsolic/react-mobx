@@ -2,7 +2,7 @@ import React from 'react';
 import { observer, } from 'mobx-react';
 import { Link } from 'react-router-dom';
 
-import { NewVehicleMakeInput } from '../Components/NewVehicleMakeInput';
+import { MakeInput } from '../Components/MakeInput';
 
 import { ModelList } from '../Components/ModelList';
 import { MakeStore } from '../Common/MakeStore';
@@ -15,7 +15,7 @@ import { action, makeObservable, observable } from 'mobx';
 export const MakeList = observer (() => {
     return (
         <section className={styles.makeSection}>
-            <NewVehicleMakeInput />
+            <MakeInput />
             {
             MakeStore.list.map(el => {
                 return( <div key={el.id}>
