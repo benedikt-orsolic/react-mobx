@@ -12,6 +12,7 @@ export class ModelInputStore {
         makeObservable(this, {
             name: observable,
             handleChange: action,
+            handleSubmit: action,
             getName: computed,
 
         });
