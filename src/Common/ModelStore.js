@@ -21,7 +21,7 @@ class VehicleModelList {
 
     addNewModel(makeId, name) {
         this.list.push({
-            id: this.list.length,
+            id: this.list[this.list.length -1].id + 1,
             makeId: makeId,
             name: name,
         })
