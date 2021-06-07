@@ -2,16 +2,21 @@ import React from 'react';
 import { observer, } from 'mobx-react';
 import { Link } from 'react-router-dom';
 
+/** Components */
 import { MakeInput } from '../Components/MakeInput';
-
 import { ModelList } from '../Components/ModelList';
+
+/** Mobx stores */
 import { MakeStore } from '../Common/MakeStore';
+import { MakeListStore } from './MakeList.store';
 
+/** Styles */
 import styles from './VehicleMake.module.css';
-import { action, makeObservable, observable } from 'mobx';
 
 
-/* Could not figure out how to put observer inside a class */
+
+const makeListStore = new MakeListStore();
+
 export const MakeList = observer (() => {
     return (
         <section className={styles.makeSection}>
@@ -23,37 +28,12 @@ export const MakeList = observer (() => {
                     <h2 className={styles.makeName}>{el.name}</h2>
                     <Link to={'make/' + el.id} >{el.name}</Link>
 
-                    {MakeListState.initKey(el.id)}
-                    <input type="checkbox" onChange={() => MakeListState.changeToggle(el.id)}></input>
-                    {MakeListState.toggleList[el.id] ? <ModelList makeId={el.id} /> : null}
+                    {makeListStore.initKey(el.id)}
+                    <input type="checkbox" onChange={() => makeListStore.changeToggle(el.id)}></input>
+                    {makeListStore.toggleList[el.id] ? <ModelList makeId={el.id} /> : null}
                 </div>)
             })
             }
         </section>
     );
 })
-
-class MakeListStateStore {
-
-    toggleList = [];
-
-    constructor() {
-        makeObservable(this, {
-            toggleList: observable,
-            changeToggle: action,
-            initKey: action,    
-        })
-    }
-
-    changeToggle(key) {
-        this.toggleList[key] = !this.toggleList[key];
-    }
-
-    initKey(key) {
-        while(this.toggleList.length <= key) {
-            this.toggleList[this.toggleList.length] = false;
-        }
-    }
-}
-
-const MakeListState = new MakeListStateStore();

@@ -1,34 +1,29 @@
 import React from 'react';
 
+/** Components  */
 import { ModelList } from '../Components/ModelList';
 import { ModelInput } from '../Components/ModelInput';
+
+/** Mobx stores */
 import { MakeStore } from '../Common/MakeStore';
 
+/** Styles */
 import styles from './VehicleMake.module.css';
 
 
 
-export class MakePage extends React.Component {
+export function MakePage(props) {
 
-    constructor(props) {
-        super(props);
-        const {id} = props.match.params
-        this.id = id;
-    }
+    
+    const {id} = props.match.params
 
-    render() {
-        return (
-            <section className={styles.makeSection}>
-
-                <h2>{
-                    MakeStore.list.map( (el) => {
-                        if( Number(el.id) === Number(this.id)) return el.name;
-                        return null;
-                    })
-                }</h2>
-                <ModelInput makeId={this.id} />
-                <ModelList makeId={this.id} />
-            </section>
-        )
-    }
+    return (
+    <section className={styles.makeSection}>
+        <h2>{MakeStore.list.map( (el) => {
+                if( Number(el.id) === Number(id)) return el.name;
+                return null;
+        })}</h2>
+        <ModelInput makeId={id} />
+        <ModelList makeId={id} />
+    </section>)
 }
