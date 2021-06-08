@@ -1,4 +1,6 @@
+import { observer } from 'mobx-react';
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 
 /** Mobx stores */
 import { MakeStore } from '../Common/MakeStore';
@@ -9,25 +11,27 @@ import styles from './VehicleMake.module.css';
 
 
 
-export function ModelPage(props) {
+export const ModelPage = observer ((props) => {
 
     
     const {id} = props.match.params;
     
     let thisModel = ModelStore.list.find(el=>Number(el.id) === Number(id));
     if(thisModel === undefined) {
-        throw new Error('undefined in ModelPage.jsx');
+        return <Redirect to='/' />
     }
 
     let thisModelMake = MakeStore.list.find(el=>Number(el.id) === Number(thisModel.makeId));
     if(thisModelMake === undefined) {
-        throw new Error('undefined in ModelPage.jsx');
+        return <Redirect to='/' />
     }
     return(<section className={styles.makeSection}>
         <h2>{thisModel.name}</h2>
         <section>
             <h3>Description</h3>
             <p>This model is made by {thisModelMake.name}</p>
+            <input type="submit" value="Delete" onClick={() => ModelStore.deleteModel(id)} />
+            
         </section>
     </section>);
-}
+})

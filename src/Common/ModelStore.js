@@ -15,6 +15,7 @@ class VehicleModelList {
         makeObservable(this, {
             list: observable,
             addNewModel: action,
+            deleteModel: action,
             getTotalCountOfModels: computed,
         })
     }
@@ -25,6 +26,11 @@ class VehicleModelList {
             makeId: makeId,
             name: name,
         })
+    }
+
+    deleteModel(id) {
+        let i = this.list.findIndex(el => Number(el.id) === Number(id));
+        this.list.splice(i, 1);
     }
 
     get getTotalCountOfModels() {
