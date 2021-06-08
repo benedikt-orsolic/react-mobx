@@ -1,4 +1,5 @@
 import { action, computed, makeObservable, observable } from "mobx";
+import { ModelStore } from './ModelStore';
 
 class VehicleMakeList {
 
@@ -12,6 +13,7 @@ class VehicleMakeList {
         makeObservable(this, {
             list: observable,
             addMake: action,
+            deleteMake: action,
             getCount: computed,
         })
     }
@@ -24,9 +26,17 @@ class VehicleMakeList {
         })
     }
 
+    deleteMake(id) {
+        ModelStore.deleteWithMakeId(id);
+        
+        let i = this.list.findIndex(el => Number(el.id) === Number(id));
+        this.list.splice(i, 1);
+    }
+
     get getCount() {
         return this.list.length;
     }
+
 }
 
 export const MakeStore = new VehicleMakeList();

@@ -9,13 +9,18 @@ import { MakeStore } from '../Common/MakeStore';
 
 /** Styles */
 import styles from './VehicleMake.module.css';
+import { observer } from 'mobx-react';
+import { Redirect } from 'react-router';
 
 
 
-export function MakePage(props) {
+export const MakePage = observer( (props) =>  {
 
-    
     const {id} = props.match.params
+    let thisMake = MakeStore.list.find(el => Number(el.id) === Number(id));
+    if( thisMake === undefined ) {
+        return <Redirect to="/" />
+    }
 
     return (
     <section className={styles.makeSection}>
@@ -25,5 +30,6 @@ export function MakePage(props) {
         })}</h2>
         <ModelInput makeId={id} />
         <ModelList makeId={id} />
+        <input type="submit" value="Delete" onClick={() => MakeStore.deleteMake(id)} />
     </section>)
-}
+})

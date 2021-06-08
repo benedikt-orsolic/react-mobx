@@ -33,6 +33,21 @@ class VehicleModelList {
         this.list.splice(i, 1);
     }
 
+    deleteWithMakeId(id) {
+        let i = 0;
+        while(1) {
+            if(this.list[i] === undefined || i >= this.list.length ) return;
+            if( Number(this.list[i].makeId) === Number(id)){
+                this.list.splice(i, 1);
+            } else {
+                /** Increment only if we don't remove element from array
+                 *  If we do i+1 moves down by one
+                 */
+                i++;
+            }
+        }
+    }
+
     get getTotalCountOfModels() {
         return this.list.length;
     }
