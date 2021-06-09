@@ -37,6 +37,10 @@ class VehicleMakeList {
         return this.list.length;
     }
 
+    getMakeById (id) {
+        return computed(() => {return  this.list.find(el => Number(el.id) === Number(id))});
+    };
+
 }
 
 export const MakeStore = new VehicleMakeList();

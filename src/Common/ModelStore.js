@@ -20,6 +20,14 @@ class VehicleModelList {
         })
     }
 
+    get getTotalCountOfModels() {
+        return this.list.length;
+    }
+
+    getModelById (id) {
+        return computed(() => {return  this.list.find(el => Number(el.id) === Number(id))});
+    };
+
     addNewModel(makeId, name) {
         this.list.push({
             id: this.list[this.list.length -1].id + 1,
@@ -46,10 +54,6 @@ class VehicleModelList {
                 i++;
             }
         }
-    }
-
-    get getTotalCountOfModels() {
-        return this.list.length;
     }
 
 }

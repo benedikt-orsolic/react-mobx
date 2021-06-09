@@ -17,7 +17,8 @@ import { Redirect } from 'react-router';
 export const MakePage = observer( (props) =>  {
 
     const {id} = props.match.params
-    let thisMake = MakeStore.list.find(el => Number(el.id) === Number(id));
+    let thisMake = MakeStore.getMakeById(id).get();
+    
     if( thisMake === undefined ) {
         return <Redirect to="/" />
     }

@@ -16,7 +16,7 @@ export const ModelPage = observer ((props) => {
     
     const {id} = props.match.params;
     
-    let thisModel = ModelStore.list.find(el=>Number(el.id) === Number(id));
+    let thisModel = ModelStore.getModelById(id).get();
     if(thisModel === undefined) {
         return <Redirect to='/' />
     }
