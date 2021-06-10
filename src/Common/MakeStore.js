@@ -14,6 +14,7 @@ class VehicleMakeList {
             list: observable,
             addMake: action,
             deleteMake: action,
+            sort: action,
             getCount: computed,
         })
     }
@@ -40,6 +41,24 @@ class VehicleMakeList {
     getMakeById (id) {
         return computed(() => {return  this.list.find(el => Number(el.id) === Number(id))});
     };
+
+    sort(order) {
+
+        if(order === 'ascending') {
+            this.list.sort((a, b) => {
+                return b.name.localeCompare(a.name);
+            });
+            return;
+        }
+        if(order === 'descending') {
+            this.list.sort((a, b) => {
+                return a.name.localeCompare(b.name);
+            });
+            return;
+        }
+        throw new Error('MakeStore: order is not recognised')
+
+    }
 
 }
 

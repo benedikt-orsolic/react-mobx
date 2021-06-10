@@ -21,8 +21,10 @@ export const MakeList = observer (() => {
     return (
         <section className={styles.makeSection}>
             <MakeInput />
-            {
-            MakeStore.list.map(el => {
+            <input type="submit" value="SortDesc" onClick={() => MakeStore.sort('descending')} />
+            <input type="submit" value="SortAsc" onClick={() => MakeStore.sort('ascending')} />
+            
+            {MakeStore.list.map(el => {
                 return( <div key={el.id}>
 
                     <h2 className={styles.makeName}>{el.name}</h2>
@@ -32,8 +34,8 @@ export const MakeList = observer (() => {
                     <input type="checkbox" onChange={() => makeListStore.changeToggle(el.id)}></input>
                     {makeListStore.toggleList[el.id] ? <ModelList makeId={el.id} /> : null}
                 </div>)
-            })
-            }
+            })}
+
         </section>
     );
 })

@@ -21,10 +21,11 @@ export const ModelPage = observer ((props) => {
         return <Redirect to='/' />
     }
 
-    let thisModelMake = MakeStore.list.find(el=>Number(el.id) === Number(thisModel.makeId));
+    let thisModelMake = MakeStore.getMakeById(thisModel.makeId).get();
     if(thisModelMake === undefined) {
         return <Redirect to='/' />
     }
+    
     return(<section className={styles.makeSection}>
         <h2>{thisModel.name}</h2>
         <section>
