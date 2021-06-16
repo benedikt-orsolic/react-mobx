@@ -16,13 +16,7 @@ import styles from './VehicleMake.module.css';
 
 
 
-export const MakeList = observer (function reactComponent({uiStore}){
-
-    // if(uiStore !== undefined) {
-    //     reactComponent.uiStore = uiStore
-    // };
-    // if(reactComponent.uiStore === undefined) return null;
-    reactComponent.uiStore = uiStore
+export const MakeList = observer (({uiStore}) => {
 
     return (
         <section className={styles.makeSection}>
@@ -36,9 +30,9 @@ export const MakeList = observer (function reactComponent({uiStore}){
                     <h2 className={styles.makeName}>{el.name}</h2>
                     <Link to={'make/' + el.id} >{el.name}</Link>
 
-                    { reactComponent.uiStore.initKey(el.id)}
-                    <input type="checkbox" onChange={() => reactComponent.uiStore.changeToggle(el.id)}></input>
-                    { reactComponent.uiStore.toggleList[el.id] ? <ModelList makeId={el.id} /> : null}
+                    { uiStore.initKey(el.id)}
+                    <input type="checkbox" onChange={() => uiStore.changeToggle(el.id)}></input>
+                    { uiStore.toggleList[el.id] ? <ModelList makeId={el.id} /> : null}
                 </div>)
             })}
 
