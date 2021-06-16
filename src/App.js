@@ -16,7 +16,7 @@ import {
 
 function App() {
 
-  const WrappedMakeList = StoreWrapper(MakeList, new MakeListStore());
+  const WrappedMakeList = StoreWrapper(MakeList, MakeListStore);
   // (props) => <MakeList name="hello" uiStore={new MakeListStore()} />;
 
   return (<div>
