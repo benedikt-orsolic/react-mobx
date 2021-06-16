@@ -8,16 +8,22 @@ import { ModelList } from '../Components/ModelList';
 
 /** Mobx stores */
 import { MakeStore } from '../Common/MakeStore';
-import { MakeListStore } from './MakeList.store';
 
 /** Styles */
 import styles from './VehicleMake.module.css';
 
 
 
-const makeListStore = new MakeListStore();
 
-export const MakeList = observer (() => {
+
+export const MakeList = observer (function reactComponent({uiStore}){
+
+    // if(uiStore !== undefined) {
+    //     reactComponent.uiStore = uiStore
+    // };
+    // if(reactComponent.uiStore === undefined) return null;
+    reactComponent.uiStore = uiStore
+
     return (
         <section className={styles.makeSection}>
             <MakeInput />
@@ -30,9 +36,9 @@ export const MakeList = observer (() => {
                     <h2 className={styles.makeName}>{el.name}</h2>
                     <Link to={'make/' + el.id} >{el.name}</Link>
 
-                    {makeListStore.initKey(el.id)}
-                    <input type="checkbox" onChange={() => makeListStore.changeToggle(el.id)}></input>
-                    {makeListStore.toggleList[el.id] ? <ModelList makeId={el.id} /> : null}
+                    { reactComponent.uiStore.initKey(el.id)}
+                    <input type="checkbox" onChange={() => reactComponent.uiStore.changeToggle(el.id)}></input>
+                    { reactComponent.uiStore.toggleList[el.id] ? <ModelList makeId={el.id} /> : null}
                 </div>)
             })}
 
