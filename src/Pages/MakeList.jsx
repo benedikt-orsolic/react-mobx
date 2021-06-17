@@ -1,26 +1,31 @@
 import React from 'react';
 import { observer, } from 'mobx-react';
 import { Link } from 'react-router-dom';
+import { WrapWithUiStore } from '../HOC/WrapWithUiStore.HOC';
 
 /** Components */
 import { MakeInput } from '../Components/MakeInput';
+import { MakeInputStore } from '../Components/MakeInput.store';
 import { ModelList } from '../Components/ModelList';
 
 /** Mobx stores */
 import { MakeStore } from '../Common/MakeStore';
-import { MakeListStore } from './MakeList.store';
 
 /** Styles */
 import styles from './VehicleMake.module.css';
 
 
 
-const makeListStore = new MakeListStore();
 
-export const MakeList = observer (() => {
+
+export const MakeList = observer (({uiStore}) => {
+
+    const WrappedMakeInput = WrapWithUiStore(MakeInput, MakeInputStore);
+
+
     return (
         <section className={styles.makeSection}>
-            <MakeInput />
+            <WrappedMakeInput />
             <input type="submit" value="SortDesc" onClick={() => MakeStore.sort('descending')} />
             <input type="submit" value="SortAsc" onClick={() => MakeStore.sort('ascending')} />
             
@@ -30,9 +35,9 @@ export const MakeList = observer (() => {
                     <h2 className={styles.makeName}>{el.name}</h2>
                     <Link to={'make/' + el.id} >{el.name}</Link>
 
-                    {makeListStore.initKey(el.id)}
-                    <input type="checkbox" onChange={() => makeListStore.changeToggle(el.id)}></input>
-                    {makeListStore.toggleList[el.id] ? <ModelList makeId={el.id} /> : null}
+                    { uiStore.initKey(el.id)}
+                    <input type="checkbox" onChange={() => uiStore.changeToggle(el.id)}></input>
+                    { uiStore.toggleList[el.id] ? <ModelList makeId={el.id} /> : null}
                 </div>)
             })}
 

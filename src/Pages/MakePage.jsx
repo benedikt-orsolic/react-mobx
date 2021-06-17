@@ -1,8 +1,10 @@
 import React from 'react';
+import { WrapWithUiStore } from '../HOC/WrapWithUiStore.HOC';
 
 /** Components  */
 import { ModelList } from '../Components/ModelList';
 import { ModelInput } from '../Components/ModelInput';
+import { ModelInputStore } from '../Components/ModelInput.store';
 
 /** Mobx stores */
 import { MakeStore } from '../Common/MakeStore';
@@ -18,6 +20,8 @@ export const MakePage = observer( (props) =>  {
 
     const {id} = props.match.params
     let thisMake = MakeStore.getMakeById(id).get();
+
+    const WrappedModelInput = WrapWithUiStore(ModelInput, ModelInputStore);
     
     if( thisMake === undefined ) {
         return <Redirect to="/" />
@@ -29,7 +33,7 @@ export const MakePage = observer( (props) =>  {
                 if( Number(el.id) === Number(id)) return el.name;
                 return null;
         })}</h2>
-        <ModelInput makeId={id} />
+        <WrappedModelInput makeId={id} />
         <ModelList makeId={id} />
         <input type="submit" value="Delete" onClick={() => MakeStore.deleteMake(id)} />
     </section>)
