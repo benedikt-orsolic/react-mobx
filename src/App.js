@@ -5,7 +5,7 @@ import { ModelPage } from './Pages/ModelPage';
 
 import { MakeListStore } from './Pages/MakeList.store';
 
-import { StoreWrapper } from './HOC/StoreWrapper.HOC';
+import { WrapWithUiStore } from './HOC/WrapWithUiStore.HOC';
 
 
 import {
@@ -16,7 +16,7 @@ import {
 
 function App() {
 
-  const WrappedMakeList = StoreWrapper(MakeList, MakeListStore);
+  const WrappedMakeList = WrapWithUiStore(MakeList, MakeListStore);
 
   return (<div>
 
@@ -26,7 +26,7 @@ function App() {
       <Route path="/make-list" component={WrappedMakeList} />
       <Route path="/make/:id" component={MakePage} />
       <Route path="/model/:id" component={ModelPage} />
-      <Route path="/" component={MakeList} />
+      <Route path="/" component={WrappedMakeList} />
     </Switch>
 
   </div>);

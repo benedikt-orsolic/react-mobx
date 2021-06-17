@@ -1,18 +1,15 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { ModelInputStore } from './ModelInput.store';
 
-const modelInputStore = new ModelInputStore();
+export const ModelInput = observer(({uiStore, makeId}) => {
 
-export const ModelInput = observer((props) => {
-
-    modelInputStore.setMakeId(props.makeId);
+    uiStore.setMakeId(makeId);
 
     return (
-        <form onSubmit={event => modelInputStore.handleSubmit(event)}>        
+        <form onSubmit={event => uiStore.handleSubmit(event)}>        
         <label>
             Model name:
-            <input type="text" value={modelInputStore.getName} onChange={event => modelInputStore.handleChange(event)} />        
+            <input type="text" value={uiStore.getName} onChange={event => uiStore.handleChange(event)} />        
         </label>
         <input type="submit" value="Submit" />
       </form>

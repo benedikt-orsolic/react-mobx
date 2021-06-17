@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function StoreWrapper(Component, Store) {
+export function WrapWithUiStore(Component, Store) {
 
     return function New(props) {
         return <Component uiStore={new Store()} {...props} />
