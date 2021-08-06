@@ -29,17 +29,23 @@ export const MakeList = observer (({uiStore}) => {
             <input type="submit" value="SortDesc" onClick={() => MakeStore.sort('descending')} />
             <input type="submit" value="SortAsc" onClick={() => MakeStore.sort('ascending')} />
             
-            {MakeStore.list.map(el => {
-                return( <div key={el.id}>
+            <table>
+                <tr>
+                    <th>Make Name</th>
+                    <th>Make models</th>
+                </tr>
+                {MakeStore.list.map(el => {
+                    return( <tr key={el.id}>
 
-                    <h2 className={styles.makeName}>{el.name}</h2>
-                    <Link to={'make/' + el.id} >{el.name}</Link>
+                        <td><Link to={'make/' + el.id} >
+                            <h2 className={styles.makeName}>{el.name}</h2>
+                        </Link></td>
+                            
 
-                    { uiStore.initKey(el.id)}
-                    <input type="checkbox" onChange={() => uiStore.changeToggle(el.id)}></input>
-                    { uiStore.toggleList[el.id] ? <ModelList makeId={el.id} /> : null}
-                </div>)
-            })}
+                        <td><ModelList makeId={el.id} /></td>
+                    </tr>)
+                })}
+            </table>
 
         </section>
     );
