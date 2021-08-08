@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 /** Mobx stores */
 import { MakeStore } from '../Common/MakeStore';
@@ -32,7 +33,7 @@ export const ModelPage = observer ((props) => {
             <h3>Description</h3>
             <p>This model is made by {thisModelMake.name}</p>
             <input type="submit" value="Delete" onClick={() => ModelStore.deleteModel(id)} />
-            
+            <Link to={"/model/edit/" + id} >Edit</Link>
         </section>
     </section>);
 })

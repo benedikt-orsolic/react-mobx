@@ -30,10 +30,13 @@ export const MakeList = observer (({uiStore}) => {
             <input type="submit" value="SortAsc" onClick={() => MakeStore.sort('ascending')} />
             
             <table>
-                <tr>
-                    <th>Make Name</th>
-                    <th>Make models</th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Make Name</th>
+                        <th>Make models</th>
+                    </tr>
+                </thead>
+                <tbody>
                 {MakeStore.list.map(el => {
                     return( <tr key={el.id}>
 
@@ -45,6 +48,7 @@ export const MakeList = observer (({uiStore}) => {
                         <td><ModelList makeId={el.id} /></td>
                     </tr>)
                 })}
+                </tbody>
             </table>
 
         </section>
