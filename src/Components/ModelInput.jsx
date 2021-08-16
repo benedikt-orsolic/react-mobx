@@ -8,7 +8,7 @@ export const ModelInput = observer(({uiStore, makeId}) => {
     return (
         <form onSubmit={event => uiStore.handleSubmit(event)}>        
         <label>
-            Model name:
+            Add new model to make list:
             <input type="text" value={uiStore.getName} onChange={event => uiStore.handleChange(event)} />        
         </label>
         <input type="submit" value="Submit" />

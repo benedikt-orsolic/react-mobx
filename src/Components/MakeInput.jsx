@@ -5,7 +5,7 @@ export const MakeInput = observer( ({uiStore}) => {
   return (
     <form onSubmit={event => uiStore.handleSubmit(event)}>        
       <label>
-        Make name:
+        Add new car make:
         <input 
           type="text" 
           value={uiStore.getName} 
