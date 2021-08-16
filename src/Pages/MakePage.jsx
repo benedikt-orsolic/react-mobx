@@ -1,4 +1,6 @@
 import React from 'react';
+
+import { Link } from 'react-router-dom';
 import { WrapWithUiStore } from '../HOC/WrapWithUiStore.HOC';
 
 /** Components  */
@@ -36,5 +38,6 @@ export const MakePage = observer( (props) =>  {
         <WrappedModelInput makeId={id} />
         <ModelList makeId={id} />
         <input type="submit" value="Delete" onClick={() => MakeStore.deleteMake(id)} />
+        <Link to={"/make/edit/" + id} >Edit</Link>
     </section>)
 })
