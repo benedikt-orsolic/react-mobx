@@ -21,7 +21,7 @@ import { Redirect } from 'react-router';
 export const MakePage = observer( (props) =>  {
 
     const {id} = props.match.params
-    let thisMake = MakeStore.getMakeById(id).get();
+    let thisMake = MakeStore.getMakeById(id);
 
     const WrappedModelInput = WrapWithUiStore(ModelInput, ModelInputStore);
     
@@ -31,10 +31,7 @@ export const MakePage = observer( (props) =>  {
 
     return (
     <section className={styles.makeSection}>
-        <h2>{MakeStore.list.map( (el) => {
-                if( Number(el.id) === Number(id)) return el.name;
-                return null;
-        })}</h2>
+        <h2>{thisMake.name}</h2>
         <WrappedModelInput makeId={id} />
         <ModelList makeId={id} />
         <input type="submit" value="Delete" onClick={() => MakeStore.deleteMake(id)} />
