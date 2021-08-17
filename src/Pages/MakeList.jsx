@@ -21,7 +21,6 @@ import styles from './VehicleMake.module.css';
 export const MakeList = observer (({uiStore}) => {
 
     const WrappedMakeInput = WrapWithUiStore(MakeInput, MakeInputStore);
-    MakeStore.fetchMakeList();
 
     return (
         <section className={styles.makeSection}>

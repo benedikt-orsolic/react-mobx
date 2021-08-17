@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable } from "mobx";
+import { action, computed, makeObservable, observable, reaction } from "mobx";
 import { ModelStore } from './ModelStore';
 
 class VehicleMakeList {
@@ -14,6 +14,8 @@ class VehicleMakeList {
             sort: action,
             getCount: computed,
         })
+
+        this.fetchMakeList();
     }
 
     addMake(name) {
