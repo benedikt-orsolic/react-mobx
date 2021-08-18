@@ -21,7 +21,17 @@ class VehicleModelList {
     }
 
     getModelById (id) {
-        return computed(() => {return  this.list.find(el => Number(el.id) === Number(id))});
+
+        return computed(() => {return  this.list.find(el => {
+            if(
+                String(el.id)
+                .localeCompare(String(id)) === 0) {
+                    return 1;
+            } else {
+                return 0;
+            }
+        })}
+        );
     };
 
     addNewModel(makeId, name) {
