@@ -40,17 +40,14 @@ class VehicleMakeList {
         ModelStore.deleteWithMakeId(id);
         
         fetch("https://api.baasic.com/beta/car-store/resources/MakeList/" + id, {
-        method: 'DELETE',
-        headers: {
-            
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
 
-        },
-        body: JSON.stringify()
+            },
         })
-        .then(response => response.json())
-        .then(json => console.log(json));
+        .catch(error => console.error(error));
     }
 
     get getCount() {
@@ -79,15 +76,14 @@ class VehicleMakeList {
 
     sort(order) {
         // TODO
-        return;
         if(order === 'ascending') {
-            this.list.sort((a, b) => {
+            this.makeList.sort((a, b) => {
                 return b.name.localeCompare(a.name);
             });
             return;
         }
         if(order === 'descending') {
-            this.list.sort((a, b) => {
+            this.makeList.sort((a, b) => {
                 return a.name.localeCompare(b.name);
             });
             return;
