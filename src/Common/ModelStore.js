@@ -2,22 +2,18 @@ import { action, computed, makeObservable, observable } from "mobx";
 
 class VehicleModelList {
 
-    list = [
-        { id: 1, makeId: 1, name: 'F-Type' },
-        { id: 2, makeId: 2, name: 'Clio' },
-        { id: 3, makeId: 2, name: 'Twingo' },
-        { id: 5, makeId: 2, name: 'Megan' },
-        { id: 6, makeId: 3, name: 'X3' },
-        { id: 7, makeId: 3, name: 'Z4' },
-    ];
+    list = [];
 
     constructor() {
         makeObservable(this, {
             list: observable,
+            fetchModelList: action,
             addNewModel: action,
             deleteModel: action,
             getTotalCountOfModels: computed,
         })
+
+        this.fetchModelList();
     }
 
     get getTotalCountOfModels() {
@@ -29,31 +25,78 @@ class VehicleModelList {
     };
 
     addNewModel(makeId, name) {
-        this.list.push({
-            id: this.list[this.list.length -1].id + 1,
-            makeId: makeId,
-            name: name,
+
+        makeId = String(makeId);
+        name = String(name);
+        var modelObj = {
+            'makeId': makeId,
+            name: name
+        };
+
+        fetch("https://api.baasic.com/beta/car-store/resources/ModelList", {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+
+        },
+        body: JSON.stringify(modelObj)
         })
+        .then(() => this.fetchModelList())
+        .catch(error => console.error(error));
+    }
+
+    async fetchModelList() {
+        // This modifies observable without and action
+        this.list = await fetch("https://api.baasic.com/beta/car-store/resources/ModelList?page=1&rpp=100", {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+    
+            }
+        })
+        .then(response => response.json())
+        .then(json => json.item);
     }
 
     deleteModel(id) {
-        let i = this.list.findIndex(el => Number(el.id) === Number(id));
-        this.list.splice(i, 1);
+        ModelStore.deleteWithMakeId(id);
+        
+        fetch("https://api.baasic.com/beta/car-store/resources/ModelList/" + id, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+
+            },
+        })
+        .then(() => this.fetchMakeList())
+        .catch(error => console.error(error));
     }
 
     deleteWithMakeId(id) {
-        let i = 0;
-        while(1) {
-            if(this.list[i] === undefined || i >= this.list.length ) return;
-            if( Number(this.list[i].makeId) === Number(id)){
-                this.list.splice(i, 1);
-            } else {
-                /** Increment only if we don't remove element from array
-                 *  If we do i+1 moves down by one
-                 */
-                i++;
+        console.log(id)
+        this.fetchModelList()
+        .then(()=>{
+            for(let i = 0; i < this.list.length; ++i) {
+                if(this.list[i] === undefined || String(this.list[i].makeId).localeCompare( String(id) ) !== 0 ) continue ;
+
+
+                fetch("https://api.baasic.com/beta/car-store/resources/ModelList/" + this.list[i].id, {
+                    method: 'DELETE',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+
+                    },
+                }).catch(error => console.error(error));
+
+               
             }
-        }
+        })
+        .then(() => this.fetchModelList())
+        .catch(error => console.error(error));
     }
 
 }
