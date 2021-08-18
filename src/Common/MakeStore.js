@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable, reaction } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 import { ModelStore } from './ModelStore';
 
 class VehicleMakeList {
@@ -33,7 +33,9 @@ class VehicleMakeList {
         body: JSON.stringify(makeObj)
         })
         .then(response => response.json())
-        .then(json => console.log(json));
+        .then(json => console.log(json))
+        .then(() => this.fetchMakeList())
+        .catch(error => console.error(error));
     }
 
     deleteMake(id) {
@@ -47,6 +49,7 @@ class VehicleMakeList {
 
             },
         })
+        .then(() => this.fetchMakeList())
         .catch(error => console.error(error));
     }
 
