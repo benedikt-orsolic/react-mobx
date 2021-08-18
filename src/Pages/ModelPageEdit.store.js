@@ -45,7 +45,24 @@ export class ModelPageEditStore {
 
 
     handleNameChange(event){
-        this.model.name = event.target.value;
+
+        let newName = event.target.value
+
+        let patchObj = {
+            'name': String(newName)
+        }
+
+        fetch("https://api.baasic.com/beta/car-store/resources/ModelList/" + this.id, {
+            method: 'PATCH',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+
+            },
+            body: JSON.stringify(patchObj)
+        })
+        .then(() => this.model.name = newName)
+        .catch(error => console.error(error));
     }
 
     handelMakeIdChange(event){
