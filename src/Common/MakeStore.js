@@ -32,8 +32,6 @@ class VehicleMakeList {
         },
         body: JSON.stringify(makeObj)
         })
-        .then(response => response.json())
-        .then(json => console.log(json))
         .then(() => this.fetchMakeList())
         .catch(error => console.error(error));
     }
@@ -59,6 +57,7 @@ class VehicleMakeList {
     }
 
     async fetchMakeList() {
+        // This modifies observable without and action
         this.makeList = await fetch("https://api.baasic.com/beta/car-store/resources/MakeList?page=1&rpp=100", {
             method: 'GET',
             headers: {
@@ -73,7 +72,16 @@ class VehicleMakeList {
     }
 
     getMakeById (id) {
-        return this.makeList.find(item => item.id === id);
+        return computed(() => {return  this.makeList.find(el => {
+            if(
+                String(el.id)
+                .localeCompare(String(id)) === 0) {
+                    return 1;
+            } else {
+                return 0;
+            }
+        })}
+        );
     
     }
 
