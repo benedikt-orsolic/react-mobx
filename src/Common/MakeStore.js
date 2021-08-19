@@ -3,55 +3,98 @@ import { ModelStore } from './ModelStore';
 
 class VehicleMakeList {
 
-    list = [
-        { id: 1, name: 'Jaguar', abr: 'Jaguar' },
-        { id: 2, name: 'Renault', abr: 'Renault' },
-        { id: 3, name: 'BMW', abr:'BMW' },
-    ];
+    makeList = [];
 
     constructor() {
         makeObservable(this, {
-            list: observable,
+            makeList: observable,
+            fetchMakeList: action,
             addMake: action,
             deleteMake: action,
             sort: action,
             getCount: computed,
         })
+
+        this.fetchMakeList();
     }
 
-    addMake(name, abr) {
-        this.list.push({
-            id: this.list[this.list.length - 1].id + 1,
-            name: name,
-            abr: abr,
+    addMake(name) {
+
+        var makeObj = {name: name};
+
+        fetch("https://api.baasic.com/beta/car-store/resources/MakeList", {
+        method: 'POST',
+        headers: {
+            
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+
+        },
+        body: JSON.stringify(makeObj)
         })
+        .then(() => this.fetchMakeList())
+        .catch(error => console.error(error));
     }
 
     deleteMake(id) {
         ModelStore.deleteWithMakeId(id);
         
-        let i = this.list.findIndex(el => Number(el.id) === Number(id));
-        this.list.splice(i, 1);
+        fetch("https://api.baasic.com/beta/car-store/resources/MakeList/" + id, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+
+            },
+        })
+        .then(() => this.fetchMakeList())
+        .catch(error => console.error(error));
     }
 
     get getCount() {
-        return this.list.length;
+        // TODO
+        return 0;
+    }
+
+    async fetchMakeList() {
+        // This modifies observable without and action
+        this.makeList = await fetch("https://api.baasic.com/beta/car-store/resources/MakeList?page=1&rpp=100", {
+            method: 'GET',
+            headers: {
+                
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+    
+            }
+        })
+        .then(response => response.json())
+        .then(json => json.item);
     }
 
     getMakeById (id) {
-        return computed(() => {return  this.list.find(el => Number(el.id) === Number(id))});
-    };
+        return computed(() => {return  this.makeList.find(el => {
+            if(
+                String(el.id)
+                .localeCompare(String(id)) === 0) {
+                    return 1;
+            } else {
+                return 0;
+            }
+        })}
+        );
+    
+    }
 
     sort(order) {
-
+        // TODO
         if(order === 'ascending') {
-            this.list.sort((a, b) => {
+            this.makeList.sort((a, b) => {
                 return b.name.localeCompare(a.name);
             });
             return;
         }
         if(order === 'descending') {
-            this.list.sort((a, b) => {
+            this.makeList.sort((a, b) => {
                 return a.name.localeCompare(b.name);
             });
             return;

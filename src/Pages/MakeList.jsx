@@ -22,7 +22,6 @@ export const MakeList = observer (({uiStore}) => {
 
     const WrappedMakeInput = WrapWithUiStore(MakeInput, MakeInputStore);
 
-
     return (
         <section className={styles.makeSection}>
             <WrappedMakeInput />
@@ -37,7 +36,7 @@ export const MakeList = observer (({uiStore}) => {
                     </tr>
                 </thead>
                 <tbody>
-                {MakeStore.list.map(el => {
+                {MakeStore.makeList.map(el => {
                     return( <tr key={el.id}>
 
                         <td><Link to={'make/' + el.id} >
