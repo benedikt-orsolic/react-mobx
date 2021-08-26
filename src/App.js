@@ -10,6 +10,9 @@ import { ModelPageEdit } from './Pages/ModelPageEdit';
 import { MakeListStore } from './Pages/MakeList.store';
 import { ModelPageEditStore } from './Pages/ModelPageEdit.store';
 
+import { MessageLog } from './Components/MessageLog';
+import { MessageLogStore } from './Components/MessageLog.store';
+
 import { WrapWithUiStore } from './HOC/WrapWithUiStore.HOC';
 
 
@@ -22,13 +25,18 @@ import { MakePageEdit } from './Pages/MakePageEdit';
 
 function App() {
 
+  const messageStore = new MessageLogStore();
+
   const WrappedMakeList = WrapWithUiStore(MakeList, MakeListStore);
   const WrappedModelPageEdit = WrapWithUiStore(ModelPageEdit, ModelPageEditStore);
   const WrappedMakePageEdit = WrapWithUiStore(MakePageEdit, MakePageEditStore);
 
+
   return (<div>
 
     <Link to='/make-list' >Make List</Link>
+
+    <MessageLog uiStore={messageStore} />
 
     <Switch>
       <Route path="/make-list" component={WrappedMakeList} />
