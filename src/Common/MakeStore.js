@@ -1,4 +1,6 @@
 import { action, computed, makeObservable, observable } from "mobx";
+
+import { User } from './User.store';
 import { ModelStore } from './ModelStore';
 
 class VehicleMakeList {
@@ -21,16 +23,17 @@ class VehicleMakeList {
     addMake(name) {
 
         var makeObj = {name: name};
+        console.log(makeObj);
+        console.log(JSON.stringify(makeObj))
 
         fetch("https://api.baasic.com/beta/car-store/resources/MakeList", {
         method: 'POST',
         headers: {
-            
+            'Authorization': User.getToken().token_type + ' ' + User.getToken().access_token,
             'Accept': 'application/json',
-            'Content-Type': 'application/json',
-
+            'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: JSON.stringify(makeObj)
+        body: 'name=' + name,
         })
         .then(() => this.fetchMakeList())
         .catch(error => console.error(error));
@@ -42,9 +45,9 @@ class VehicleMakeList {
         fetch("https://api.baasic.com/beta/car-store/resources/MakeList/" + id, {
             method: 'DELETE',
             headers: {
+                'Authorization': User.getToken().token_type + ' ' + User.getToken().access_token,
                 'Accept': 'application/json',
-                'Content-Type': 'application/json',
-
+                'Content-Type': 'application/x-www-form-urlencoded',
             },
         })
         .then(() => this.fetchMakeList())

@@ -1,4 +1,5 @@
 import './App.css';
+import { User } from './Common/User.store';
 import { MakeList } from './Pages/MakeList';
 
 import { MakePage } from './Pages/MakePage';
@@ -24,6 +25,10 @@ import {
 import { MakePageEdit } from './Pages/MakePageEdit';
 
 function App() {
+
+  window.user = User
+
+  console.log(User.getToken());
 
   const messageStore = new MessageLogStore();
 
