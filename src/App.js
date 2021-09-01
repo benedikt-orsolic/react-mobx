@@ -1,5 +1,6 @@
 import './App.css';
 import { User } from './Common/User.store';
+
 import { MakeList } from './Pages/MakeList';
 
 import { MakePage } from './Pages/MakePage';
@@ -11,11 +12,13 @@ import { ModelPageEdit } from './Pages/ModelPageEdit';
 import { MakeListStore } from './Pages/MakeList.store';
 import { ModelPageEditStore } from './Pages/ModelPageEdit.store';
 
+import { Login } from './Pages/LogIn';
+import { LoginStore } from './Pages/LogIn.store';
+
 import { MessageLog } from './Components/MessageLog';
 import { MessageLogStore } from './Components/MessageLog.store';
 
-import { Login } from './Pages/LogIn';
-import { LoginStore } from './Pages/LogIn.store';
+import { UserLink } from './Components/UserLink';
 
 import { WrapWithUiStore } from './HOC/WrapWithUiStore.HOC';
 
@@ -40,7 +43,8 @@ function App() {
   return (<div>
 
     <Link to='/make-list' >Make List</Link>
-    <Link to='/login'>Log in</Link>
+    <UserLink />
+    
 
     <MessageLog uiStore={messageStore} />
 
