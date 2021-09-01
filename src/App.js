@@ -14,6 +14,9 @@ import { ModelPageEditStore } from './Pages/ModelPageEdit.store';
 import { MessageLog } from './Components/MessageLog';
 import { MessageLogStore } from './Components/MessageLog.store';
 
+import { Login } from './Pages/LogIn';
+import { LoginStore } from './Pages/LogIn.store';
+
 import { WrapWithUiStore } from './HOC/WrapWithUiStore.HOC';
 
 
@@ -26,20 +29,18 @@ import { MakePageEdit } from './Pages/MakePageEdit';
 
 function App() {
 
-  window.user = User
-
-  console.log(User.getToken());
-
   const messageStore = new MessageLogStore();
 
   const WrappedMakeList = WrapWithUiStore(MakeList, MakeListStore);
   const WrappedModelPageEdit = WrapWithUiStore(ModelPageEdit, ModelPageEditStore);
   const WrappedMakePageEdit = WrapWithUiStore(MakePageEdit, MakePageEditStore);
+  const WrappedLogin = WrapWithUiStore(Login, LoginStore);
 
 
   return (<div>
 
     <Link to='/make-list' >Make List</Link>
+    <Link to='/login'>Log in</Link>
 
     <MessageLog uiStore={messageStore} />
 
@@ -50,6 +51,7 @@ function App() {
       <Route path="/make/:id" component={MakePage} />
       <Route path="/model/edit/:id" component={WrappedModelPageEdit} />
       <Route path="/model/:id" component={ModelPage} />
+      <Route path="/login" component={WrappedLogin} />
       <Route path="/" component={WrappedMakeList} />
     </Switch>
 
