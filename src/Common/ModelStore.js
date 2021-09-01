@@ -1,7 +1,8 @@
 import { action, computed, makeObservable, observable } from "mobx";
+import { User } from './User.store';
 
 class VehicleModelList {
-
+    
     list = [];
 
     constructor() {
@@ -36,6 +37,7 @@ class VehicleModelList {
 
     addNewModel(makeId, name) {
 
+        if(User.getToken() === undefined) return;
         makeId = String(makeId);
         name = String(name);
         var modelObj = {
@@ -46,6 +48,7 @@ class VehicleModelList {
         fetch("https://api.baasic.com/beta/car-store/resources/ModelList", {
         method: 'POST',
         headers: {
+            'Authorization': User.getAuthHeader(),
             'Accept': 'application/json',
             'Content-Type': 'application/json',
 
@@ -76,6 +79,7 @@ class VehicleModelList {
         fetch("https://api.baasic.com/beta/car-store/resources/ModelList/" + id, {
             method: 'DELETE',
             headers: {
+                'Authorization': User.getAuthHeader(),
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
 
@@ -96,6 +100,7 @@ class VehicleModelList {
                 fetch("https://api.baasic.com/beta/car-store/resources/ModelList/" + this.list[i].id, {
                     method: 'DELETE',
                     headers: {
+                        'Authorization': User.getAuthHeader(),
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
 

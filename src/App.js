@@ -1,4 +1,6 @@
 import './App.css';
+import { User } from './Common/User.store';
+
 import { MakeList } from './Pages/MakeList';
 
 import { MakePage } from './Pages/MakePage';
@@ -10,8 +12,13 @@ import { ModelPageEdit } from './Pages/ModelPageEdit';
 import { MakeListStore } from './Pages/MakeList.store';
 import { ModelPageEditStore } from './Pages/ModelPageEdit.store';
 
+import { Login } from './Pages/LogIn';
+import { LoginStore } from './Pages/LogIn.store';
+
 import { MessageLog } from './Components/MessageLog';
 import { MessageLogStore } from './Components/MessageLog.store';
+
+import { UserLink } from './Components/UserLink';
 
 import { WrapWithUiStore } from './HOC/WrapWithUiStore.HOC';
 
@@ -30,11 +37,14 @@ function App() {
   const WrappedMakeList = WrapWithUiStore(MakeList, MakeListStore);
   const WrappedModelPageEdit = WrapWithUiStore(ModelPageEdit, ModelPageEditStore);
   const WrappedMakePageEdit = WrapWithUiStore(MakePageEdit, MakePageEditStore);
+  const WrappedLogin = WrapWithUiStore(Login, LoginStore);
 
 
   return (<div>
 
     <Link to='/make-list' >Make List</Link>
+    <UserLink />
+    
 
     <MessageLog uiStore={messageStore} />
 
@@ -45,6 +55,7 @@ function App() {
       <Route path="/make/:id" component={MakePage} />
       <Route path="/model/edit/:id" component={WrappedModelPageEdit} />
       <Route path="/model/:id" component={ModelPage} />
+      <Route path="/login" component={WrappedLogin} />
       <Route path="/" component={WrappedMakeList} />
     </Switch>
 
