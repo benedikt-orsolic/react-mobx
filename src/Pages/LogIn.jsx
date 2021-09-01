@@ -5,7 +5,9 @@ import { User } from '../Common/User.store';
 export const Login = observer( ({uiStore, history}) => {
 
     if(User.getToken() !== undefined) {
-        history.push('/')
+        // ERROR Cannot update during an existing state transition 
+        history.push('/');
+        return null;
     }
   return (
     <form onSubmit={event => uiStore.handleSubmit(event)}>        
