@@ -29,7 +29,7 @@ class VehicleMakeList {
         fetch("https://api.baasic.com/beta/car-store/resources/MakeList", {
         method: 'POST',
         headers: {
-            'Authorization': User.getToken().token_type + ' ' + User.getToken().access_token,
+            'Authorization': User.getAuthHeader(),
             'Accept': 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded',
         },
@@ -45,7 +45,7 @@ class VehicleMakeList {
         fetch("https://api.baasic.com/beta/car-store/resources/MakeList/" + id, {
             method: 'DELETE',
             headers: {
-                'Authorization': User.getToken().token_type + ' ' + User.getToken().access_token,
+                'Authorization': User.getAuthHeader(),
                 'Accept': 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
