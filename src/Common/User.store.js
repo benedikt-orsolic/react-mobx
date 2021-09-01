@@ -18,7 +18,7 @@ class UserStore {
     }
 
     logIn(userName, password) {
-        return fetch('https://api.baasic.com/beta/car-store//login?options={options}', {
+        return fetch('https://api.baasic.com/beta/car-store/login?options={options}', {
             method: 'POST',
             body: 'grant_type=password&username=' + userName + '&password=' + password,
             headers: {
@@ -27,6 +27,21 @@ class UserStore {
         })
         .then(response => response.json())
         .then(data => this.token = data)
+    }
+
+    logOut() {
+        fetch('https://api.baasic.com/beta/car-store/login', {
+            method: 'DELETE',
+            body: JSON.stringify({
+                token_type: this.token.token_type,
+                token: this.token.access_token,
+            }),
+            headers: {
+                'Authorization': this.getAuthHeader(),
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+        })
+        .then(()=>this.token = undefined)
     }
 
     getToken() {

@@ -8,6 +8,6 @@ export const UserLink = observer( ({uiStore, history}) => {
    if(User.getToken() === undefined) {
        return (<Link to='/login'>Log in</Link>);
    } else {
-       return (<p>Logged in</p>);
+       return (<button onClick={e => User.logOut()}>Log out</button>);
    }
 })
