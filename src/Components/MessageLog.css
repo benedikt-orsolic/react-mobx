@@ -1,0 +1,11 @@
+.MessageLog {
+    position: fixed;
+    top: 15em;
+    left: 0em;
+}
+
+.MsgListCheckBox {
+    position: relative;
+    top: 0;
+    left: 0;
+}
