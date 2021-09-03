@@ -1,7 +1,7 @@
 import { action, makeObservable, computed } from 'mobx';
 import { ModelStore } from '../Common/ModelStore';
 
-
+import { User } from '../Common/User.store';
 
 export class ModelPageEditStore {
 
@@ -46,6 +46,8 @@ export class ModelPageEditStore {
 
     handleNameChange(event){
 
+        if(!User.isLoggedIn()) { return; }
+
         let newName = event.target.value
 
         let patchObj = {
@@ -55,6 +57,7 @@ export class ModelPageEditStore {
         fetch("https://api.baasic.com/beta/car-store/resources/ModelList/" + this.id, {
             method: 'PATCH',
             headers: {
+                'Authorization': User.getAuthHeader(),
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
 

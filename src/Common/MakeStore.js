@@ -22,9 +22,7 @@ class VehicleMakeList {
 
     addMake(name) {
 
-        var makeObj = {name: name};
-        console.log(makeObj);
-        console.log(JSON.stringify(makeObj))
+        if(!User.isLoggedIn()) { return; }
 
         fetch("https://api.baasic.com/beta/car-store/resources/MakeList", {
         method: 'POST',
@@ -40,6 +38,9 @@ class VehicleMakeList {
     }
 
     deleteMake(id) {
+
+        if(!User.isLoggedIn()) { return; }
+
         ModelStore.deleteWithMakeId(id);
         
         fetch("https://api.baasic.com/beta/car-store/resources/MakeList/" + id, {
@@ -89,7 +90,6 @@ class VehicleMakeList {
     }
 
     sort(order) {
-        // TODO
         if(order === 'ascending') {
             this.makeList.sort((a, b) => {
                 return b.name.localeCompare(a.name);
@@ -102,7 +102,7 @@ class VehicleMakeList {
             });
             return;
         }
-        throw new Error('MakeStore: order is not recognised')
+        throw new Error('MakeStore: order is not recognized')
 
     }
 

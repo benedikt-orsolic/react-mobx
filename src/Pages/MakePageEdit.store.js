@@ -1,6 +1,7 @@
 import { action, makeObservable, computed } from 'mobx';
 import { MakeStore } from '../Common/MakeStore';
 
+import { User } from '../Common/User.store';
 
 
 export class MakePageEditStore {
@@ -36,15 +37,18 @@ export class MakePageEditStore {
 
     handleNameChange(event){
 
+        if(!User.isLoggedIn()) { return; }
+
         let newName = event.target.value
 
         let patchObj = {
             'name': String(newName)
         }
 
-        fetch("https://api.baasic.com/beta/car-store/resources/ModelList/" + this.id, {
+        fetch("https://api.baasic.com/beta/car-store/resources/MakeList/" + this.id, {
             method: 'PATCH',
             headers: {
+                'Authorization': User.getAuthHeader(),
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
 

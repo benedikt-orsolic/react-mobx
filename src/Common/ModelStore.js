@@ -37,7 +37,8 @@ class VehicleModelList {
 
     addNewModel(makeId, name) {
 
-        if(User.getToken() === undefined) return;
+        if(!User.isLoggedIn()) { return; }
+
         makeId = String(makeId);
         name = String(name);
         var modelObj = {
@@ -74,6 +75,9 @@ class VehicleModelList {
     }
 
     deleteModel(id) {
+
+        if(!User.isLoggedIn()) { return; }
+
         ModelStore.deleteWithMakeId(id);
         
         fetch("https://api.baasic.com/beta/car-store/resources/ModelList/" + id, {
@@ -90,7 +94,9 @@ class VehicleModelList {
     }
 
     deleteWithMakeId(id) {
-        console.log(id)
+
+        if(!User.isLoggedIn()) { return; }
+        
         this.fetchModelList()
         .then(()=>{
             for(let i = 0; i < this.list.length; ++i) {

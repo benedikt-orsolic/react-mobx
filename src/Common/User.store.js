@@ -17,6 +17,12 @@ class UserStore {
         })
     }
 
+    isLoggedIn() {
+        if(this.token !== undefined) return true;
+
+        return false;
+    }
+
     logIn(userName, password) {
         return fetch('https://api.baasic.com/beta/car-store/login?options={options}', {
             method: 'POST',

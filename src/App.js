@@ -1,5 +1,4 @@
 import './App.css';
-import { User } from './Common/User.store';
 
 import { MakeList } from './Pages/MakeList';
 
