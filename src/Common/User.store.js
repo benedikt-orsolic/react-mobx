@@ -3,7 +3,7 @@
  */
 
 
-import { action, makeObservable, observable } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 
 class UserStore {
 
@@ -13,13 +13,14 @@ class UserStore {
         makeObservable(this, {
             token: observable,
             logIn: action,
-
+            logOut: action,
         })
     }
 
     isLoggedIn() {
         if(this.token !== undefined) return true;
 
+        window.msgService.addLog('You are not logged in')
         return false;
     }
 
@@ -51,10 +52,8 @@ class UserStore {
     }
 
     getToken() {
-        if(this.token === undefined) {
-            console.log('you are not logged in')
-        }
-        return this.token;
+        if(this.isLoggedIn())  return this.token;
+        return undefined;
     }
 
     getAuthHeader() {

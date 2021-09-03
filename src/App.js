@@ -16,6 +16,7 @@ import { LoginStore } from './Pages/LogIn.store';
 
 import { MessageLog } from './Components/MessageLog';
 import { MessageLogStore } from './Components/MessageLog.store';
+import { MessageService } from './Common/MessageService.store';
 
 import { UserLink } from './Components/UserLink';
 
@@ -31,12 +32,14 @@ import { MakePageEdit } from './Pages/MakePageEdit';
 
 function App() {
 
-  const messageStore = new MessageLogStore();
+  window.msgService = new MessageService();
 
   const WrappedMakeList = WrapWithUiStore(MakeList, MakeListStore);
   const WrappedModelPageEdit = WrapWithUiStore(ModelPageEdit, ModelPageEditStore);
   const WrappedMakePageEdit = WrapWithUiStore(MakePageEdit, MakePageEditStore);
   const WrappedLogin = WrapWithUiStore(Login, LoginStore);
+
+  const WrappedMessageLog = WrapWithUiStore(MessageLog, MessageLogStore)
 
 
   return (<div>
@@ -45,7 +48,7 @@ function App() {
     <UserLink />
     
 
-    <MessageLog uiStore={messageStore} />
+    <WrappedMessageLog />
 
     <Switch>
       <Route path="/make-list" component={WrappedMakeList} />
