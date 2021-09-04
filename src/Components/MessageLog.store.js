@@ -12,7 +12,6 @@ export class MessageLogStore {
     }
 
     handleChange(event) {
-        this.isOpen = event.target.checked;
-        console.log(event.target.checked);
+        this.isOpen = !this.isOpen;
     }
 }

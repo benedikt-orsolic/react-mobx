@@ -4,25 +4,26 @@ import './MessageLog.css';
 
 export const MessageLog = observer( ({uiStore}) => {
 
-  const checkbox = (<input className="MsgListCheckBox" type="checkbox" checked={uiStore.isOpen} onChange={event => uiStore.handleChange(event)} />)
+  const toggleButton = (<p className="MsgListCheckBox" onClick={event => uiStore.handleChange(event)}>{window.msgService.isOpen ? 'Hide messages' : 'Show messages'}</p>)
 
-  const msgList = (<ul>
-    {window.msgService.msgList.map(el => {
+  const msgList = (<ul className="msgList">
+    {window.msgService.msgList.map((el, index) => {
       if(el == null) return null;
-      return(<li key={el.id}>
+      return(<li key={index}>
+        <button onClick={() => window.msgService.rmMsg(el.id)}>X</button>
         {el.msg}
       </li>)
     })}
   </ul>)
 
   const forOpen = (<div className="MessageLog">
-    {checkbox}
+    {toggleButton}
     {msgList}
   </div>)
 
   const forClosed = (
     <div className="MessageLog">
-    {checkbox}
+    {toggleButton}
   </div>
 )
 

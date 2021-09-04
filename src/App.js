@@ -1,5 +1,7 @@
 import './App.css';
+import { WrapWithUiStore } from './HOC/WrapWithUiStore.HOC';
 
+/** Pages for router */
 import { MakeList } from './Pages/MakeList';
 
 import { MakePage } from './Pages/MakePage';
@@ -14,19 +16,20 @@ import { ModelPageEditStore } from './Pages/ModelPageEdit.store';
 import { Login } from './Pages/LogIn';
 import { LoginStore } from './Pages/LogIn.store';
 
+
+/** Components */
 import { MessageLog } from './Components/MessageLog';
 import { MessageLogStore } from './Components/MessageLog.store';
+import { NavBar } from './Components/NavBar';
+
+
+
 import { MessageService } from './Common/MessageService.store';
-
-import { UserLink } from './Components/UserLink';
-
-import { WrapWithUiStore } from './HOC/WrapWithUiStore.HOC';
 
 
 import {
   Route,
-  Switch,
-  Link
+  Switch
 } from 'react-router-dom';
 import { MakePageEdit } from './Pages/MakePageEdit';
 
@@ -44,9 +47,8 @@ function App() {
 
   return (<div>
 
-    <Link to='/make-list' >Make List</Link>
-    <UserLink />
     
+    <NavBar />
 
     <WrappedMessageLog />
 

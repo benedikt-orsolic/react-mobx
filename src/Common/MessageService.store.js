@@ -1,6 +1,8 @@
 import { action, makeObservable, observable } from 'mobx';
 
 export class MessageService {
+
+    static lastId = 10;
     
     msgList = [{
         id: 0,
@@ -16,23 +18,15 @@ export class MessageService {
     constructor(){
         makeObservable(this, {
             msgList: observable,
-            addMsg: action,
             addLog: action,
             rmMsg: action,
         });
     }
 
-    addMsg(msgStr) {
-        this.msgList.push({
-            id: this.msgList[this.msgList.length-1].id + 1,
-            msg: msgStr,
-        })
-    }
-
     addLog(msg, timeout=15000) {
         
         let newLength = this.msgList.push({
-            id: this.msgList[this.msgList.length-1].id + 1,
+            id: MessageService.lastId++,
             msg: msg,
         });
         

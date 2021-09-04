@@ -5,9 +5,10 @@ import { observer } from 'mobx-react';
 
 export const UserLink = observer( ({uiStore, history}) => {
 
-   if(User.getToken() === undefined) {
+   if(!User.isLoggedIn()) {
        return (<Link to='/login'>Log in</Link>);
    } else {
-       return (<button onClick={e => User.logOut()}>Log out</button>);
+       // Use a to match the rest of nav items
+       return (<a onClick={e => User.logOut()} href="/">Log out</a>);
    }
 })
