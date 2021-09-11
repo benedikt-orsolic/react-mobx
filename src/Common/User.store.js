@@ -57,7 +57,11 @@ class UserStore {
     }
 
     getAuthHeader() {
-        return this.token.token_type + ' ' + User.token.access_token
+        return (
+            this.token === undefined ? 
+            undefined : 
+            this.token.token_type + ' ' + User.token.access_token
+        )
     }
 
 

@@ -23,8 +23,11 @@ import { MessageLogStore } from './Components/MessageLog.store';
 import { NavBar } from './Components/NavBar';
 
 
-
+/** Services */
 import { MessageService } from './Common/MessageService.store';
+
+/** Stores */
+import { User } from './Common/User.store';
 
 
 import {
@@ -36,6 +39,7 @@ import { MakePageEdit } from './Pages/MakePageEdit';
 function App() {
 
   window.msgService = new MessageService();
+  window.user = User;
 
   const WrappedMakeList = WrapWithUiStore(MakeList, MakeListStore);
   const WrappedModelPageEdit = WrapWithUiStore(ModelPageEdit, ModelPageEditStore);
