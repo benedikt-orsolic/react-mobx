@@ -3,64 +3,59 @@
  */
 
 
-import { action, makeObservable, observable } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
+
+
+/** Services */
+import { UserService } from './User.service';
+
+
+
 
 class UserStore {
 
     token = undefined;
+    tokenTimeOut = undefined;
 
     constructor (){
         makeObservable(this, {
             token: observable,
             logIn: action,
             logOut: action,
+            unsetTokenOnExpire: action,
+
+            isLoggedIn: computed,
         })
     }
 
-    isLoggedIn() {
-        if(this.token !== undefined) return true;
+    async logIn(userName, password) {
+        this.token = await UserService.getToken(userName, password);
 
-        window.msgService.addLog('You are not logged in')
-        return false;
+        clearTimeout(this.tokenTimeOut);
+        this.tokenTimeOut = setTimeout(()=>{this.unsetTokenOnExpire()}, this.token.expires_in)
     }
 
-    logIn(userName, password) {
-        return fetch('https://api.baasic.com/beta/car-store/login?options={options}', {
-            method: 'POST',
-            body: 'grant_type=password&username=' + userName + '&password=' + password,
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-        })
-        .then(response => response.json())
-        .then(data => this.token = data)
+    async logOut() {
+        if( await UserService.rmTokenFromSystem(this.token.token_type, this.token.access_token) ) {
+            this.token = undefined;
+            clearTimeout(this.tokenTimeOut);
+        }
     }
 
-    logOut() {
-        fetch('https://api.baasic.com/beta/car-store/login', {
-            method: 'DELETE',
-            body: JSON.stringify({
-                token_type: this.token.token_type,
-                token: this.token.access_token,
-            }),
-            headers: {
-                'Authorization': this.getAuthHeader(),
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-        })
-        .then(()=>this.token = undefined)
+    get isLoggedIn() {
+        return this.token !== undefined;
     }
 
-    getToken() {
-        if(this.isLoggedIn())  return this.token;
-        return undefined;
+    unsetTokenOnExpire() {
+        this.token = undefined;
+        window.msgService.addLog('Your session has expired, pleas log in')
     }
 
     getAuthHeader() {
         return (
             this.token === undefined ? 
             undefined : 
-            this.token.token_type + ' ' + User.token.access_token
+            this.token.token_type + ' ' + this.token.access_token
         )
     }
 

@@ -68,7 +68,7 @@ class VehicleModelList {
     async deleteWithMakeId(id) {
 
         /** This should be cared for on server side */
-        if(!User.isLoggedIn()) { return; }
+        if(!User.isLoggedIn) { return; }
         
         await this.fetchModelList();
         for(let i = 0; i < this.list.length; ++i) {

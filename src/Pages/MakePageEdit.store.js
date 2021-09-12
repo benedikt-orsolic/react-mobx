@@ -1,9 +1,6 @@
 import { action, makeObservable, computed } from 'mobx';
 import { MakeStore } from '../Common/MakeStore';
 
-import { User } from '../Common/User.store';
-
-
 export class MakePageEditStore {
 
     id = -1;

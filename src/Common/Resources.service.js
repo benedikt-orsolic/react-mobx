@@ -18,23 +18,31 @@ class ResourcesServiceClass {
 
     async post(resourcesName, requestBody) {
 
-        if(!window.user.isLoggedIn()) { return; }
-
         const response = await fetch(baseURL + apiKey + 'resources/' + resourcesName, {
             method: 'POST',
             headers: this.generateHeaders(),
             body: JSON.stringify(requestBody),
-        })
+        });
+
+        switch(response.status) {
+            case 401:
+                window.msgService.addLog('Unauthorized.');
+                break;
+        }
     }
 
     async delete(resourceName, id) {
-
-        if(!window.user.isLoggedIn()) { return; }
         
         const response = await fetch(baseURL + apiKey + 'resources/' + resourceName + '/' + id, {
             method: 'DELETE',
             headers: this.generateHeaders(),
-        })
+        });
+
+        switch(response.status) {
+            case 401:
+                window.msgService.addLog('Unauthorized.');
+                break;
+        }
     }
 
     async get(resourceName, pageNumber=1, itemsPerPage=25, sortBy='id', sortOrder='desc') {
@@ -46,7 +54,14 @@ class ResourcesServiceClass {
         const response = await fetch(baseURL + apiKey + 'resources/' + resourceName + '?' + page + sort + search, {
             method: 'GET',
             headers: this.generateHeaders(),
-        })
+        });
+
+        switch(response.status) {
+            case 401:
+                window.msgService.addLog('Unauthorized.');
+                break;
+        }
+
         const json = await response.json();
         return json.item;
     }
@@ -54,13 +69,17 @@ class ResourcesServiceClass {
     // Returns true on success 
     async update(resourceName, id, requestBody) {
 
-        if(!window.user.isLoggedIn()) { return; }
-
         const response = await fetch(baseURL + apiKey + 'resources/' + resourceName + '/' + id, {
             method: 'PATCH',
             headers: this.generateHeaders(),
             body: JSON.stringify(requestBody)
         });
+
+        switch(response.status) {
+            case 401:
+                window.msgService.addLog('Unauthorized.');
+                break;
+        }
 
         return response.status === 204;
     }

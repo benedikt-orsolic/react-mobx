@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 
 export const UserLink = observer( ({uiStore, history}) => {
 
-   if(!User.isLoggedIn()) {
+   if(!User.isLoggedIn) {
        return (<Link to='/login'>Log in</Link>);
    } else {
        // Use a to match the rest of nav items
