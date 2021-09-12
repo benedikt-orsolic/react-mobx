@@ -28,6 +28,8 @@ class ResourcesServiceClass {
             case 401:
                 window.msgService.addLog('Unauthorized.');
                 break;
+            default:
+                // Empty
         }
     }
 
@@ -42,6 +44,8 @@ class ResourcesServiceClass {
             case 401:
                 window.msgService.addLog('Unauthorized.');
                 break;
+            default:
+                // Empty
         }
     }
 
@@ -60,6 +64,8 @@ class ResourcesServiceClass {
             case 401:
                 window.msgService.addLog('Unauthorized.');
                 break;
+            default:
+                // Empty
         }
 
         const json = await response.json();
@@ -79,6 +85,8 @@ class ResourcesServiceClass {
             case 401:
                 window.msgService.addLog('Unauthorized.');
                 break;
+            default:
+                // Empty
         }
 
         return response.status === 204;

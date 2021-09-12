@@ -28,10 +28,8 @@ export class LoginStore {
         return this.password;
     }
 
-    handleUserNameChange(event) {  
-        console.log(event.target.value)  
+    handleUserNameChange(event) {
         this.userName = event.target.value;
-        console.log(this.userName)
     }
 
     handlePwdChange(event) {    

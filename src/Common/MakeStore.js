@@ -19,6 +19,8 @@ class VehicleMakeList {
             addMake: action,
             deleteMake: action,
             sort: action,
+            updateList: action,
+
             getCount: computed,
         })
 
@@ -46,7 +48,12 @@ class VehicleMakeList {
 
     async fetchMakeList(sortOrder='desc', pageNumber=1, itemsPerPage=25, sortBy='name') {
         // This modifies observable without and action
-        this.makeList = await ResourcesService.get(resourceName, pageNumber, itemsPerPage, sortBy, sortOrder);
+        this.updateList(await ResourcesService.get(resourceName, pageNumber, itemsPerPage, sortBy, sortOrder));
+    }
+
+    // Since fetchMakeList is async it modifies list without action
+    updateList(newList) {
+        this.makeList = newList;
     }
 
     async updatedMake(id, requestBody) {

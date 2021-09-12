@@ -6,9 +6,9 @@ export const Login = observer( ({uiStore, history}) => {
 
   if(User.isLoggedIn) {
     // ERROR Cannot update during an existing state transition 
-    history.push('/');
+    history.goBack();
     return null;
-  }
+  } else 
   return (
     <form onSubmit={event => uiStore.handleSubmit(event)}>        
       <label>

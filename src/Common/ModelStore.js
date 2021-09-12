@@ -17,6 +17,8 @@ class VehicleModelList {
             fetchModelList: action,
             addNewModel: action,
             deleteModel: action,
+            updateList: action,
+
             getTotalCountOfModels: computed,
         })
 
@@ -56,7 +58,12 @@ class VehicleModelList {
 
     async fetchModelList() {
         // This modifies observable without and action
-        this.list = await ResourcesService.get(resourceName);
+        this.updateList(await ResourcesService.get(resourceName));
+    }
+
+    // Since fetchMakeList is async it modifies list without action
+    updateList(newList) {
+        this.makeList = newList;
     }
 
     async deleteModel(id) {

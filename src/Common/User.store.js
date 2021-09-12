@@ -32,7 +32,9 @@ class UserStore {
         this.token = await UserService.getToken(userName, password);
 
         clearTimeout(this.tokenTimeOut);
-        this.tokenTimeOut = setTimeout(()=>{this.unsetTokenOnExpire()}, this.token.expires_in)
+
+        // Received time is 7200, for ms is too short so I assume it is in s which is about 2h
+        this.tokenTimeOut = setTimeout(()=>{this.unsetTokenOnExpire()}, this.token.expires_in * 1000)
     }
 
     async logOut() {
