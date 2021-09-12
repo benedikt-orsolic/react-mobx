@@ -3,6 +3,8 @@ import {
     apiKey
 } from './Constants';
 
+const errorLocation = ' At ResourceService.';
+
 class ResourcesServiceClass {
 
     generateHeaders() {
@@ -18,11 +20,18 @@ class ResourcesServiceClass {
 
     async post(resourcesName, requestBody) {
 
-        const response = await fetch(baseURL + apiKey + 'resources/' + resourcesName, {
-            method: 'POST',
-            headers: this.generateHeaders(),
-            body: JSON.stringify(requestBody),
-        });
+        let response = undefined;
+        try{
+            response = await fetch(baseURL + apiKey + 'resources/' + resourcesName, {
+                method: 'POST',
+                headers: this.generateHeaders(),
+                body: JSON.stringify(requestBody),
+            });
+        } catch(error) {
+            console.error(error + errorLocation);
+            window.msgService.addLog('There was a network error!');
+            return;
+        }
 
         switch(response.status) {
             case 401:
@@ -35,10 +44,18 @@ class ResourcesServiceClass {
 
     async delete(resourceName, id) {
         
-        const response = await fetch(baseURL + apiKey + 'resources/' + resourceName + '/' + id, {
-            method: 'DELETE',
-            headers: this.generateHeaders(),
-        });
+        let response = undefined;
+
+        try{
+            response = await fetch(baseURL + apiKey + 'resources/' + resourceName + '/' + id, {
+                method: 'DELETE',
+                headers: this.generateHeaders(),
+            });
+        } catch(error) {
+            console.error(error + errorLocation);
+            window.msgService.addLog('There was a network error!');
+            return;
+        }
 
         switch(response.status) {
             case 401:
@@ -50,16 +67,25 @@ class ResourcesServiceClass {
     }
 
     async get(resourceName, pageNumber=1, itemsPerPage=25, sortBy='id', sortOrder='desc') {
-
+        
         let page = 'page=' + pageNumber + '&rpp=' + itemsPerPage;
         let sort = '&sort=' + sortBy + '|' + sortOrder;
         let search = '&searchQuarry='
 
-        const response = await fetch(baseURL + apiKey + 'resources/' + resourceName + '?' + page + sort + search, {
-            method: 'GET',
-            headers: this.generateHeaders(),
-        });
 
+        let response = undefined;
+        try{
+            response = await fetch(baseURL + apiKey + 'resources/' + resourceName + '?' + page + sort + search, {
+                method: 'GET',
+                headers: this.generateHeaders(),
+            });
+        } catch(error) {
+            console.error(error + errorLocation);
+            window.msgService.addLog('There was a network error!');
+            return undefined;
+        }
+
+        
         switch(response.status) {
             case 401:
                 window.msgService.addLog('Unauthorized.');
@@ -75,11 +101,18 @@ class ResourcesServiceClass {
     // Returns true on success 
     async update(resourceName, id, requestBody) {
 
-        const response = await fetch(baseURL + apiKey + 'resources/' + resourceName + '/' + id, {
-            method: 'PATCH',
-            headers: this.generateHeaders(),
-            body: JSON.stringify(requestBody)
-        });
+        let response = undefined;
+        try{
+            response = await fetch(baseURL + apiKey + 'resources/' + resourceName + '/' + id, {
+                method: 'PATCH',
+                headers: this.generateHeaders(),
+                body: JSON.stringify(requestBody)
+            });
+        } catch(error) {
+            console.error(error + errorLocation);
+            window.msgService.addLog('There was a network error!');
+            return;
+        }
 
         switch(response.status) {
             case 401:
