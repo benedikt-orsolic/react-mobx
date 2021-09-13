@@ -9,7 +9,10 @@ export const MakePageEdit = observer (({uiStore, match}) => {
 
     const id = match.params.id
     uiStore.setMakeId(id);
-
+    
+    if(uiStore.make === undefined) {
+        return(<p>We are looking up for make with this id</p>)
+    }
     return (<form>   
         Name
         <input type="text" value={uiStore.getName} onChange={event => uiStore.handleNameChange(event)} /><br />
