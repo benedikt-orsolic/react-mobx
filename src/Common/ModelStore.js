@@ -1,6 +1,12 @@
 import { action, computed, makeObservable, observable } from "mobx";
 import { User } from './User.store';
 
+/** Services */
+import { ResourcesService } from "./Resources.service";
+
+
+
+const resourceName = 'ModelList';
 class VehicleModelList {
     
     list = [];
@@ -11,6 +17,8 @@ class VehicleModelList {
             fetchModelList: action,
             addNewModel: action,
             deleteModel: action,
+            updateList: action,
+
             getTotalCountOfModels: computed,
         })
 
@@ -35,9 +43,7 @@ class VehicleModelList {
         );
     };
 
-    addNewModel(makeId, name) {
-
-        if(!User.isLoggedIn()) { return; }
+    async addNewModel(makeId, name) {
 
         makeId = String(makeId);
         name = String(name);
@@ -46,78 +52,36 @@ class VehicleModelList {
             name: name
         };
 
-        fetch("https://api.baasic.com/beta/car-store/resources/ModelList", {
-        method: 'POST',
-        headers: {
-            'Authorization': User.getAuthHeader(),
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-
-        },
-        body: JSON.stringify(modelObj)
-        })
-        .then(() => this.fetchModelList())
-        .catch(error => console.error(error));
+        await ResourcesService.post( resourceName, modelObj );
+        this.fetchModelList();
     }
 
     async fetchModelList() {
         // This modifies observable without and action
-        this.list = await fetch("https://api.baasic.com/beta/car-store/resources/ModelList?page=1&rpp=100", {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-    
-            }
-        })
-        .then(response => response.json())
-        .then(json => json.item);
+        this.updateList(await ResourcesService.get(resourceName));
     }
 
-    deleteModel(id) {
-
-        if(!User.isLoggedIn()) { return; }
-
-        ModelStore.deleteWithMakeId(id);
-        
-        fetch("https://api.baasic.com/beta/car-store/resources/ModelList/" + id, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': User.getAuthHeader(),
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-
-            },
-        })
-        .then(() => this.fetchMakeList())
-        .catch(error => console.error(error));
+    // Since fetchMakeList is async it modifies list without action
+    updateList(newList) {
+        this.makeList = newList;
     }
 
-    deleteWithMakeId(id) {
+    async deleteModel(id) {
 
-        if(!User.isLoggedIn()) { return; }
+        await ResourcesService.delete( resourceName, id );
+        this.fetchModelList();
+    }
+
+    async deleteWithMakeId(id) {
+
+        /** This should be cared for on server side */
+        if(!User.isLoggedIn) { return; }
         
-        this.fetchModelList()
-        .then(()=>{
-            for(let i = 0; i < this.list.length; ++i) {
-                if(this.list[i] === undefined || String(this.list[i].makeId).localeCompare( String(id) ) !== 0 ) continue ;
-
-
-                fetch("https://api.baasic.com/beta/car-store/resources/ModelList/" + this.list[i].id, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': User.getAuthHeader(),
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-
-                    },
-                }).catch(error => console.error(error));
-
-               
-            }
-        })
-        .then(() => this.fetchModelList())
-        .catch(error => console.error(error));
+        await this.fetchModelList();
+        for(let i = 0; i < this.list.length; ++i) {
+            if(this.list[i] === undefined || String(this.list[i].makeId).localeCompare( String(id) ) !== 0 ) continue ;
+            await ResourcesService.delete( resourceName, id );
+        }
     }
 
 }

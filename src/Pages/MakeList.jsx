@@ -36,7 +36,9 @@ export const MakeList = observer (({uiStore}) => {
                     </tr>
                 </thead>
                 <tbody>
-                {MakeStore.makeList.map(el => {
+                {MakeStore.makeList === undefined ?
+                null : 
+                MakeStore.makeList.map(el => {
                     return( <tr key={el.id}>
 
                         <td><Link to={'make/' + el.id} >

@@ -1,7 +1,12 @@
 import { action, computed, makeObservable, observable } from "mobx";
 
-import { User } from './User.store';
+import { ResourcesService } from "./Resources.service";
+
 import { ModelStore } from './ModelStore';
+
+
+
+const resourceName = 'MakeList';
 
 class VehicleMakeList {
 
@@ -14,45 +19,26 @@ class VehicleMakeList {
             addMake: action,
             deleteMake: action,
             sort: action,
+            updateList: action,
+
             getCount: computed,
         })
 
         this.fetchMakeList();
     }
 
-    addMake(name) {
+    async addMake(makeName) {
 
-        if(!User.isLoggedIn()) { return; }
-
-        fetch("https://api.baasic.com/beta/car-store/resources/MakeList", {
-        method: 'POST',
-        headers: {
-            'Authorization': User.getAuthHeader(),
-            'Accept': 'application/json',
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'name=' + name,
-        })
-        .then(() => this.fetchMakeList())
-        .catch(error => console.error(error));
+        await ResourcesService.post( resourceName, {'name': makeName} );
+        this.fetchMakeList();
     }
 
-    deleteMake(id) {
+    async deleteMake(id) {
 
-        if(!User.isLoggedIn()) { return; }
-
-        ModelStore.deleteWithMakeId(id);
+        await ModelStore.deleteWithMakeId(id);
+        await ResourcesService.delete( resourceName, id );
+        this.fetchMakeList();
         
-        fetch("https://api.baasic.com/beta/car-store/resources/MakeList/" + id, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': User.getAuthHeader(),
-                'Accept': 'application/json',
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-        })
-        .then(() => this.fetchMakeList())
-        .catch(error => console.error(error));
     }
 
     get getCount() {
@@ -60,20 +46,20 @@ class VehicleMakeList {
         return 0;
     }
 
-    async fetchMakeList() {
+    async fetchMakeList(sortOrder='desc', pageNumber=1, itemsPerPage=25, sortBy='name') {
         // This modifies observable without and action
-        this.makeList = await fetch("https://api.baasic.com/beta/car-store/resources/MakeList?page=1&rpp=100", {
-            method: 'GET',
-            headers: {
-                
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-    
-            }
-        })
-        .then(response => response.json())
-        .then(json => json.item);
+        this.updateList(await ResourcesService.get(resourceName, pageNumber, itemsPerPage, sortBy, sortOrder));
     }
+
+    // Since fetchMakeList is async it modifies list without action
+    updateList(newList) {
+        this.makeList = newList;
+    }
+
+    async updatedMake(id, requestBody) {
+        return await ResourcesService.update(resourceName, id, requestBody);
+    }
+
 
     getMakeById (id) {
         return computed(() => {return  this.makeList.find(el => {
@@ -91,19 +77,11 @@ class VehicleMakeList {
 
     sort(order) {
         if(order === 'ascending') {
-            this.makeList.sort((a, b) => {
-                return b.name.localeCompare(a.name);
-            });
-            return;
+            this.fetchMakeList('asc');
         }
         if(order === 'descending') {
-            this.makeList.sort((a, b) => {
-                return a.name.localeCompare(b.name);
-            });
-            return;
+            this.fetchMakeList('desc');
         }
-        throw new Error('MakeStore: order is not recognized')
-
     }
 
 }
