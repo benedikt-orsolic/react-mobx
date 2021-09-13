@@ -30,7 +30,7 @@ class VehicleMakeList {
     async addMake(makeName) {
 
         let response = await ResourcesService.post( resourceName, {'name': makeName} );
-        this.fetchMakeList();
+        await this.fetchMakeList();
         return response;
     }
 

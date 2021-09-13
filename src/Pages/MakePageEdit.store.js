@@ -23,16 +23,16 @@ export class MakePageEditStore {
         if(this.make !== undefined) return;
 
         if( id === 'undefined') {
-            this.internalSetMake(await MakeStore.addMake('Unamed make'));
-            return;
+            let newMake = await MakeStore.addMake('Unamed make')
+            id = newMake.id;
         }
 
-        this.internalSetMake(MakeStore.getMakeById(id).get());
+        this.internalSetMake(id);
     }
 
     // async function can not be mobx action
-    internalSetMake(make) {
-        this.make = make;
+    internalSetMake(id) {
+        this.make = MakeStore.getMakeById(id).get();
     }
 
     get getName(){
