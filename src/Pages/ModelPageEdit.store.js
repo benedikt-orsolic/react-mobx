@@ -1,30 +1,37 @@
-import { action, makeObservable, computed } from 'mobx';
+import { action, makeObservable, computed, observable } from 'mobx';
 import { ModelStore } from '../Common/ModelStore';
 
-import { User } from '../Common/User.store';
-
 export class ModelPageEditStore {
-
-    id = -1;
 
     model = undefined;
 
     constructor(id){
 
         makeObservable(this, {
-            setModelId: action,
-            handleNameChange: action,
+            model: observable,
+
+            internalSetModel: action,
+            internalHandelNameChange: action,
             handelMakeIdChange: action,
+
             getName: computed,
             getMakeId: computed,
 
         });
     }
 
-    setModelId(id) {
-        this.id = id;
+    async setModelId(makeId, id) {
+        if( this.model !== undefined ) return;
+
+        if(id === 'undefined') {
+            let newModel = await ModelStore.addNewModel(makeId, 'Unnamed model');
+            id = newModel.id;
+        }
+        this.internalSetModel(id);
+    }
+
+    internalSetModel(id) {
         this.model = ModelStore.getModelById(id).get();
-        console.log(this.model.name)
     }
 
     get getName(){
@@ -44,9 +51,7 @@ export class ModelPageEditStore {
     }
 
 
-    handleNameChange(event){
-
-        if(!User.isLoggedIn()) { return; }
+    async handleNameChange(event){
 
         let newName = event.target.value
 
@@ -54,18 +59,11 @@ export class ModelPageEditStore {
             'name': String(newName)
         }
 
-        fetch("https://api.baasic.com/beta/car-store/resources/ModelList/" + this.id, {
-            method: 'PATCH',
-            headers: {
-                'Authorization': User.getAuthHeader(),
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
+        if (await ModelStore.updatedModel(this.model.id, patchObj)) this.internalHandelNameChange(newName);
+    }
 
-            },
-            body: JSON.stringify(patchObj)
-        })
-        .then(() => this.model.name = newName)
-        .catch(error => console.error(error));
+    internalHandelNameChange(newName) {
+        this.model.name = newName;
     }
 
     handelMakeIdChange(event){

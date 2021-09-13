@@ -31,16 +31,25 @@ class VehicleModelList {
 
     getModelById (id) {
 
-        return computed(() => {return  this.list.find(el => {
-            if(
-                String(el.id)
-                .localeCompare(String(id)) === 0) {
-                    return 1;
-            } else {
-                return 0;
-            }
-        })}
-        );
+        return computed( () => {
+        for(let i = 0; i < this.list.length; i++) {
+            if(String(this.list[i].id).localeCompare(String(id)) === 0) return this.list[i];
+            continue;
+        }
+        return undefined;
+        })
+
+        // This was always return undefined for some reason
+        //return computed(() => {return  this.list.find(el => {
+        //    if(
+        //        String(el.id)
+        //        .localeCompare(String(id)) === 0) {
+        //            return 1;
+        //    } else {
+        //        return 0;
+        //    }
+        //})}
+        //);
     };
 
     async addNewModel(makeId, name) {
@@ -51,9 +60,9 @@ class VehicleModelList {
             'makeId': makeId,
             name: name
         };
-
-        await ResourcesService.post( resourceName, modelObj );
-        this.fetchModelList();
+        let response = await ResourcesService.post( resourceName, modelObj );
+        await this.fetchModelList();
+        return response;
     }
 
     async fetchModelList() {
@@ -63,7 +72,11 @@ class VehicleModelList {
 
     // Since fetchMakeList is async it modifies list without action
     updateList(newList) {
-        this.makeList = newList;
+        this.list = newList;
+    }
+
+    async updatedModel(id, requestBody) {
+        return await ResourcesService.update(resourceName, id, requestBody);
     }
 
     async deleteModel(id) {

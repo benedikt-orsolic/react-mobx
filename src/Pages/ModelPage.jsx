@@ -33,7 +33,7 @@ export const ModelPage = observer ((props) => {
             <h3>Description</h3>
             <p>This model is made by {thisModelMake.name}</p>
             <input type="submit" value="Delete" onClick={() => ModelStore.deleteModel(id)} />
-            <Link to={"/model/edit/" + id} >Edit</Link>
+            <Link to={"/model/edit/" + thisModel.makeId + '/' + id} >Edit</Link>
         </section>
     </section>);
 })
