@@ -7,8 +7,13 @@ import { observer, } from 'mobx-react';
 
 export const ModelPageEdit = observer (({uiStore, match}) => {
 
-    const id = match.params.id
-    uiStore.setModelId(id);
+    const id = match.params.id;
+    const makeId = match.params.makeId;
+    uiStore.setModelId(makeId, id);
+
+    if(uiStore.model === undefined) {
+        return(<p>We are looking up for model with this id</p>)
+    }
 
     return (<form>   
         Name

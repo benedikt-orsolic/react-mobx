@@ -29,8 +29,9 @@ class VehicleMakeList {
 
     async addMake(makeName) {
 
-        await ResourcesService.post( resourceName, {'name': makeName} );
-        this.fetchMakeList();
+        let response = await ResourcesService.post( resourceName, {'name': makeName} );
+        await this.fetchMakeList();
+        return response;
     }
 
     async deleteMake(id) {

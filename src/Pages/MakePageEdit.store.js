@@ -1,25 +1,37 @@
-import { action, makeObservable, computed } from 'mobx';
+import { action, makeObservable, computed, observable } from 'mobx';
 import { MakeStore } from '../Common/MakeStore';
 
 export class MakePageEditStore {
 
-    id = -1;
-
-    model = undefined;
+    make = undefined;
 
     constructor(){
 
         makeObservable(this, {
-            handleNameChange: action,
+            make: observable,
+            
+            internalHandelNameChange: action,
             setName: action,
-            setMakeId: action,
+            internalSetMake: action,
             getName: computed,
 
         });
     }
 
-    setMakeId(id) {
-        this.id = id;
+    async setMakeId(id) {
+
+        if(this.make !== undefined) return;
+
+        if( id === 'undefined') {
+            let newMake = await MakeStore.addMake('Unamed make')
+            id = newMake.id;
+        }
+
+        this.internalSetMake(id);
+    }
+
+    // async function can not be mobx action
+    internalSetMake(id) {
         this.make = MakeStore.getMakeById(id).get();
     }
 
@@ -40,6 +52,10 @@ export class MakePageEditStore {
             'name': String(newName)
         }
         
-        if (await MakeStore.updatedMake(this.id, requestBody)) this.make.name = newName;
+        if (await MakeStore.updatedMake(this.make.id, requestBody)) this.internalHandelNameChange(newName);
+    }
+
+    internalHandelNameChange(newName) {
+        this.make.name = newName
     }
 }

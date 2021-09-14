@@ -61,7 +61,7 @@ function App() {
       
       <Route path="/make/edit/:id" component={WrappedMakePageEdit} />
       <Route path="/make/:id" component={MakePage} />
-      <Route path="/model/edit/:id" component={WrappedModelPageEdit} />
+      <Route path="/model/edit/:makeId/:id" component={WrappedModelPageEdit} />
       <Route path="/model/:id" component={ModelPage} />
       <Route path="/login" component={WrappedLogin} />
       <Route path="/" component={WrappedMakeList} />

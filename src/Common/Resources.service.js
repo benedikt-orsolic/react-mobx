@@ -40,6 +40,8 @@ class ResourcesServiceClass {
             default:
                 // Empty
         }
+
+        return await response.json();
     }
 
     async delete(resourceName, id) {
