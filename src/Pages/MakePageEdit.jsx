@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer, } from 'mobx-react';
 
-
+import { Form, form } from './MakePageEdit.form';
 
 
 
@@ -13,11 +13,25 @@ export const MakePageEdit = observer (({uiStore, match}) => {
     if(uiStore.make === undefined) {
         return(<p>We are looking up for make with this id</p>)
     }
-    return (<form>   
+    return (<div><form>   
         Name
         <input type="text" value={uiStore.getName} onChange={event => uiStore.handleNameChange(event)} /><br />
 
         MakeId
         <input type="number" value={uiStore.getMakeId} onChange={event => uiStore.handleMakeIdChange(event)} readOnly="readOnly" /><br />
-     </form>);
+     </form> 
+     <br />
+     <br />
+     <br />
+     <br />
+     <br />
+     <hr />
+     <br />
+     <br />
+     <br />
+     <br />
+     <h1>Using mobx-react-form</h1>
+     <br />
+     <Form form={form} />
+     </div>);
 })
