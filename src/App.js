@@ -1,13 +1,15 @@
 import './App.css';
-import { WrapWithUiStore } from './HOC/WrapWithUiStore.HOC';
+import { WrapWithUiStore, WrapWithPageStore } from './HOC/WrapWithUiStore.HOC';
 
 /** Pages for router */
 import { MakeList } from './Pages/MakeList';
 
 import { MakePage } from './Pages/MakePage';
+import { MakePageStore } from './Pages/MakePage.store';
 import { MakePageEditStore } from './Pages/MakePageEdit.store';
 
 import { ModelPage } from './Pages/ModelPage';
+import { ModelPageStore } from './Pages/ModelPage.store';
 import { ModelPageEdit } from './Pages/ModelPageEdit';
 
 import { MakeListStore } from './Pages/MakeList.store';
@@ -42,6 +44,8 @@ function App() {
   window.user = User;
 
   const WrappedMakeList = WrapWithUiStore(MakeList, MakeListStore);
+  const WrappedMakePage = WrapWithPageStore(MakePage, MakePageStore);
+  const WrappedModelPage = WrapWithPageStore(ModelPage, ModelPageStore);
   const WrappedModelPageEdit = WrapWithUiStore(ModelPageEdit, ModelPageEditStore);
   const WrappedMakePageEdit = WrapWithUiStore(MakePageEdit, MakePageEditStore);
   const WrappedLogin = WrapWithUiStore(Login, LoginStore);
@@ -60,9 +64,9 @@ function App() {
       <Route path="/make-list" component={WrappedMakeList} />
       
       <Route path="/make/edit/:id" component={WrappedMakePageEdit} />
-      <Route path="/make/:id" component={MakePage} />
+      <Route path="/make/:id" component={WrappedMakePage} />
       <Route path="/model/edit/:makeId/:id" component={WrappedModelPageEdit} />
-      <Route path="/model/:id" component={ModelPage} />
+      <Route path="/model/:id" component={WrappedModelPage} />
       <Route path="/login" component={WrappedLogin} />
       <Route path="/" component={WrappedMakeList} />
     </Switch>

@@ -29,15 +29,12 @@ class VehicleModelList {
         return this.list.length;
     }
 
-    getModelById (id) {
+    async getModelById (id) {
 
-        return computed( () => {
-        for(let i = 0; i < this.list.length; i++) {
-            if(String(this.list[i].id).localeCompare(String(id)) === 0) return this.list[i];
-            continue;
-        }
-        return undefined;
-        })
+        return await ResourcesService.get({
+            id: id,
+            resourceName: resourceName,
+        });
 
         // This was always return undefined for some reason
         //return computed(() => {return  this.list.find(el => {
@@ -67,7 +64,7 @@ class VehicleModelList {
 
     async fetchModelList() {
         // This modifies observable without and action
-        this.updateList(await ResourcesService.get(resourceName));
+        this.updateList(await ResourcesService.get({resourceName: resourceName}));
     }
 
     // Since fetchMakeList is async it modifies list without action

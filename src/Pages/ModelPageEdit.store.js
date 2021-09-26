@@ -4,13 +4,17 @@ import { ModelStore } from '../Common/ModelStore';
 export class ModelPageEditStore {
 
     model = undefined;
+    syncStatus = '';
+    timeOutVar = undefined;
 
     constructor(id){
 
         makeObservable(this, {
             model: observable,
+            syncStatus: observable,
 
             internalSetModel: action,
+            changeSyncStatus: action,
             internalHandelNameChange: action,
             handelMakeIdChange: action,
 
@@ -27,11 +31,11 @@ export class ModelPageEditStore {
             let newModel = await ModelStore.addNewModel(makeId, 'Unnamed model');
             id = newModel.id;
         }
-        this.internalSetModel(id);
+        this.internalSetModel(await ModelStore.getModelById(id));
     }
 
-    internalSetModel(id) {
-        this.model = ModelStore.getModelById(id).get();
+    internalSetModel(model) {
+        this.model = model;
     }
 
     get getName(){
@@ -55,11 +59,26 @@ export class ModelPageEditStore {
 
         let newName = event.target.value
 
+        this.internalHandelNameChange(newName);
+
         let patchObj = {
             'name': String(newName)
         }
 
-        if (await ModelStore.updatedModel(this.model.id, patchObj)) this.internalHandelNameChange(newName);
+        if(this.timeOutVar !== undefined) return;
+
+        this.changeSyncStatus('Waiting for server to update');
+
+        this.timeOutVar = setTimeout(async () => {
+            if(await ModelStore.updatedModel(this.model.id, patchObj)) this.changeSyncStatus('Evrything is up in the cloud');
+            else this.changeSyncStatus('Something went wrong');
+
+            this.timeOutVar = undefined;
+        }, 1000)
+    }
+
+    changeSyncStatus(str) {
+        this.syncStatus = str;
     }
 
     internalHandelNameChange(newName) {
