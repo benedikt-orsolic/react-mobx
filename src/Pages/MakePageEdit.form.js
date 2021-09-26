@@ -3,21 +3,27 @@ import { observer } from 'mobx-react';
 import MobxReactForm from 'mobx-react-form';
 
 const fields = [{
-    name: 'email',
-    label: 'Email',
-    placeholder: 'Insert Email',
-  }, {
-    name: 'password',
-    label: 'Password',
-    placeholder: 'Insert Password',
-  }, {
-    name: 'passwordConfirm',
-    label: 'Password Confirmation',
-    placeholder: 'Confirm Password',
+    name: 'makeName',
+    label: 'Make name',
+    placeholder: 'Unnamed make',
 }];
-export const form = new MobxReactForm({ fields });
 
+const hooks = {
 
+  onSuccess(form) {
+    console.log(form)
+    console.log('Form Values!', form.values());
+  },
+
+  onToggle(e) {console.log(e)}
+}
+
+const handlers = {
+  onChange(e) {
+    console.log(e)
+  }
+}
+export const form = new MobxReactForm({ fields }, {hooks, handlers});
 
 const SimpleInput = observer(({ field, type = 'text', placeholder = null }) => (
   <div className="measure">
@@ -32,8 +38,13 @@ const SimpleInput = observer(({ field, type = 'text', placeholder = null }) => (
 ));
 export const Form = observer(({ form }) => (
   <form onSubmit={form.onSubmit}>
-      {console.log(form.$('email'))}
-      <SimpleInput field={form.$('email')} />
+        <label htmlFor={form.$('makeName').id}>{form.$('makeName').label}</label>
+        <input 
+            {...form.$('makeName').bind({ type: 'text', placeholder: null })}
+            onFocus={form.onToggle}
+        />
+
+      <button type="submit" onClick={form.onSubmit}>Submit</button>
   </form>
 ));
 
