@@ -21,5 +21,7 @@ export const ModelPageEdit = observer (({uiStore, match}) => {
 
         MakeId
         <input type="number" value={uiStore.getMakeId} onChange={event => uiStore.handleMakeIdChange(event)} readOnly="readOnly" /><br />
+
+        <p>{uiStore.syncStatus}</p>
      </form>);
 })

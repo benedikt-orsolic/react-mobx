@@ -1,10 +1,8 @@
 import { observer } from 'mobx-react';
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 /** Mobx stores */
-import { MakeStore } from '../Common/MakeStore';
 import { ModelStore } from '../Common/ModelStore';
 
 /** Styles */
@@ -12,28 +10,23 @@ import styles from './VehicleMake.module.css';
 
 
 
-export const ModelPage = observer ((props) => {
+export const ModelPage = observer (({match, PageStore}) => {
 
     
-    const {id} = props.match.params;
+    const id = match.params.id;
+    PageStore.getModelById(id);
     
-    let thisModel = ModelStore.getModelById(id).get();
-    if(thisModel === undefined) {
-        return <Redirect to='/' />
-    }
-
-    let thisModelMake = MakeStore.getMakeById(thisModel.makeId).get();
-    if(thisModelMake === undefined) {
-        return <Redirect to='/' />
+    if(PageStore.model === undefined || PageStore.parentMake === undefined) {
+        return (<p>We are waiting for some data to arive</p>)
     }
     
     return(<section className={styles.makeSection}>
-        <h2>{thisModel.name}</h2>
+        <h2>{PageStore.model.name}</h2>
         <section>
             <h3>Description</h3>
-            <p>This model is made by {thisModelMake.name}</p>
+            <p>This model is made by {PageStore.parentMake.name}</p>
             <input type="submit" value="Delete" onClick={() => ModelStore.deleteModel(id)} />
-            <Link to={"/model/edit/" + thisModel.makeId + '/' + id} >Edit</Link>
+            <Link to={"/model/edit/" + PageStore.model.makeId + '/' + id} >Edit</Link>
         </section>
     </section>);
 })

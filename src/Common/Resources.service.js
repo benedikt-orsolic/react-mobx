@@ -68,16 +68,32 @@ class ResourcesServiceClass {
         }
     }
 
-    async get(resourceName, pageNumber=1, itemsPerPage=25, sortBy='id', sortOrder='desc') {
+    async get(paramObject) {
+
+        paramObject.pageNumber = paramObject.pageNumber !== undefined ? paramObject.pageNumber : '1';
+        paramObject.itemsPerPage = paramObject.itemsPerPage !== undefined ? paramObject.itemsPerPage : '25';
+
+        paramObject.sortBy = paramObject.sortBy !== undefined ? paramObject.sortBy : 'id';
+        paramObject.sortOrder = paramObject.sortOrder !== undefined ? paramObject.sortOrder : 'desc';
+
+        paramObject.searchQuarry = paramObject.searchQuarry !== undefined ? paramObject.searchQuarry : '';
         
-        let page = 'page=' + pageNumber + '&rpp=' + itemsPerPage;
-        let sort = '&sort=' + sortBy + '|' + sortOrder;
-        let search = '&searchQuarry='
+        paramObject.id = paramObject.id !== undefined ? '/' + paramObject.id : '';
 
 
+
+        let page = 'page=' + paramObject.pageNumber + '&rpp=' + paramObject.itemsPerPage;
+        let sort = '&sort=' + paramObject.sortBy + '|' + paramObject.sortOrder;
+        let search = '&searchQuarry=' + paramObject.searchQuarry;
+        let id = paramObject.id;
+
+        let url = baseURL + apiKey + 'resources/' + paramObject.resourceName + id + '?' + page + sort + search
+        
+        
+        
         let response = undefined;
         try{
-            response = await fetch(baseURL + apiKey + 'resources/' + resourceName + '?' + page + sort + search, {
+            response = await fetch(url, {
                 method: 'GET',
                 headers: this.generateHeaders(),
             });
@@ -97,7 +113,10 @@ class ResourcesServiceClass {
         }
 
         const json = await response.json();
-        return json.item;
+
+        // If it is a list array is stored in json.item, if server returns single obj from store it is that obj
+        let result = json.item !== undefined ? json.item : json;
+        return result;
     }
 
     // Returns true on success 

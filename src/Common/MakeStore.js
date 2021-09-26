@@ -11,6 +11,7 @@ const resourceName = 'MakeList';
 class VehicleMakeList {
 
     makeList = [];
+    autoUpdateTimeOut = undefined;
 
     constructor() {
         makeObservable(this, {
@@ -47,9 +48,15 @@ class VehicleMakeList {
         return 0;
     }
 
-    async fetchMakeList(sortOrder='desc', pageNumber=1, itemsPerPage=25, sortBy='name') {
+    async fetchMakeList(paramObject) {
+
+        let internalParamObject = {
+            resourceName: resourceName,
+        }
+
+        Object.assign(internalParamObject, paramObject)
         // This modifies observable without and action
-        this.updateList(await ResourcesService.get(resourceName, pageNumber, itemsPerPage, sortBy, sortOrder));
+        this.updateList(await ResourcesService.get(internalParamObject));
     }
 
     // Since fetchMakeList is async it modifies list without action
@@ -58,30 +65,25 @@ class VehicleMakeList {
     }
 
     async updatedMake(id, requestBody) {
+        if( this.autoUpdateTimeOut === undefined ) this.autoUpdateTimeOut = setTimeout(() => {this.fetchMakeList(); this.autoUpdateTimeOut=undefined}, 5000);
         return await ResourcesService.update(resourceName, id, requestBody);
     }
 
 
-    getMakeById (id) {
-        return computed(() => {return  this.makeList.find(el => {
-            if(
-                String(el.id)
-                .localeCompare(String(id)) === 0) {
-                    return 1;
-            } else {
-                return 0;
-            }
-        })}
-        );
-    
+    async getMakeById (id) {
+
+        return await ResourcesService.get({
+            id: id,
+            resourceName: resourceName,
+        });
     }
 
     sort(order) {
         if(order === 'ascending') {
-            this.fetchMakeList('asc');
+            this.fetchMakeList({sortBy: 'name', sortOrder: 'asc'});
         }
         if(order === 'descending') {
-            this.fetchMakeList('desc');
+            this.fetchMakeList({sortBy: 'name', sortOrder: 'desc'});
         }
     }
 
