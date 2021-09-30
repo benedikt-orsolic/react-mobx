@@ -2,7 +2,7 @@
 import {
     baseURL,
     apiKey
-} from './Constants';
+} from '../Constants';
 
 
 

@@ -7,7 +7,7 @@ import { action, computed, makeObservable, observable } from "mobx";
 
 
 /** Services */
-import { UserService } from './User.service';
+import { UserService } from './Services/User.service';
 
 
 
