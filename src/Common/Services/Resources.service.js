@@ -1,11 +1,11 @@
 import {
     baseURL,
     apiKey
-} from './Constants';
+} from '../Constants';
 
 const errorLocation = ' At ResourceService.';
 
-class ResourcesServiceClass {
+export class ResourcesServiceClass {
 
     generateHeaders() {
 
@@ -122,9 +122,11 @@ class ResourcesServiceClass {
     // Returns true on success 
     async update(resourceName, id, requestBody) {
 
+        let url = baseURL + apiKey + 'resources/' + resourceName + '/' + id;
+
         let response = undefined;
         try{
-            response = await fetch(baseURL + apiKey + 'resources/' + resourceName + '/' + id, {
+            response = await fetch(url, {
                 method: 'PATCH',
                 headers: this.generateHeaders(),
                 body: JSON.stringify(requestBody)
@@ -147,6 +149,3 @@ class ResourcesServiceClass {
     }
     
 }
-
-
-export const ResourcesService = new ResourcesServiceClass();

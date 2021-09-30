@@ -2,11 +2,11 @@ import { action, computed, makeObservable, observable } from "mobx";
 import { User } from './User.store';
 
 /** Services */
-import { ResourcesService } from "./Resources.service";
+import { ModelStoreService } from './Services/ModelStore.service';
 
 
 
-const resourceName = 'ModelList';
+
 class VehicleModelList {
     
     list = [];
@@ -31,9 +31,8 @@ class VehicleModelList {
 
     async getModelById (id) {
 
-        return await ResourcesService.get({
+        return await ModelStoreService.get({
             id: id,
-            resourceName: resourceName,
         });
 
         // This was always return undefined for some reason
@@ -57,14 +56,14 @@ class VehicleModelList {
             'makeId': makeId,
             name: name
         };
-        let response = await ResourcesService.post( resourceName, modelObj );
+        let response = await ModelStoreService.post( modelObj );
         await this.fetchModelList();
         return response;
     }
 
     async fetchModelList() {
         // This modifies observable without and action
-        this.updateList(await ResourcesService.get({resourceName: resourceName}));
+        this.updateList(await ModelStoreService.get());
     }
 
     // Since fetchMakeList is async it modifies list without action
@@ -73,12 +72,12 @@ class VehicleModelList {
     }
 
     async updatedModel(id, requestBody) {
-        return await ResourcesService.update(resourceName, id, requestBody);
+        return await ModelStoreService.update(id, requestBody);
     }
 
     async deleteModel(id) {
 
-        await ResourcesService.delete( resourceName, id );
+        await ModelStoreService.delete( id );
         this.fetchModelList();
     }
 
@@ -90,7 +89,7 @@ class VehicleModelList {
         await this.fetchModelList();
         for(let i = 0; i < this.list.length; ++i) {
             if(this.list[i] === undefined || String(this.list[i].makeId).localeCompare( String(id) ) !== 0 ) continue ;
-            await ResourcesService.delete( resourceName, id );
+            await ModelStoreService.delete( id );
         }
     }
 
