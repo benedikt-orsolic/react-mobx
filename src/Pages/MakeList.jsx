@@ -19,7 +19,7 @@ export const MakeList = observer (({uiStore}) => {
 
     return (
         <section className={styles.makeSection}>
-            <li><Link to='/make/edit/undefined' >Add new make</Link></li>
+            <Link to='/make/edit/undefined' >Add new make</Link><br /> <hr />
             <input type="submit" value="SortDesc" onClick={() => MakeStore.sort('descending')} />
             <input type="submit" value="SortAsc" onClick={() => MakeStore.sort('ascending')} />
             

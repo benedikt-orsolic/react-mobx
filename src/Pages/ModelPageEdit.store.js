@@ -61,15 +61,15 @@ export class ModelPageEditStore {
 
         this.internalHandelNameChange(newName);
 
-        let patchObj = {
-            'name': String(newName)
-        }
-
         if(this.timeOutVar !== undefined) return;
 
         this.changeSyncStatus('Waiting for server to update');
 
         this.timeOutVar = setTimeout(async () => {
+            
+            let patchObj = {
+                'name': this.model.name,
+            }
             if(await ModelStore.updatedModel(this.model.id, patchObj)) this.changeSyncStatus('Evrything is up in the cloud');
             else this.changeSyncStatus('Something went wrong');
 

@@ -52,16 +52,16 @@ export class MakePageEditStore {
 
         let newName = event.target.value;
         this.internalHandelNameChange(newName);
-
-        let requestBody = {
-            'name': String(newName)
-        }
-
         if(this.timeOutVar !== undefined) return;
 
         this.changeSyncStatus('Waiting for server to update');
 
         this.timeOutVar = setTimeout(async () => {
+            
+            let requestBody = {
+                'name': this.make.name,
+            }
+
             if(await MakeStore.updatedMake(this.make.id, requestBody)) this.changeSyncStatus('Evrything is up in the cloud');
             else this.changeSyncStatus('Something went wrong');
 
