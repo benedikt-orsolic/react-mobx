@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { observer, } from 'mobx-react';
 import { Link } from 'react-router-dom';
 
@@ -10,12 +10,25 @@ import { MakeStore } from '../Common/MakeStore';
 
 /** Styles */
 import styles from './VehicleMake.module.css';
+import { ModelStore } from '../Common/ModelStore';
 
 
 
 
 
 export const MakeList = observer (({uiStore}) => {
+
+    const [fetchList, setFetchList] = React.useState(true)
+
+    useEffect(() => {
+        if(fetchList) {
+
+            // Component did mount
+            MakeStore.fetchMakeList();
+            ModelStore.fetchModelList();
+            setFetchList(false);
+        }
+    }, [fetchList])
 
     return (
         <section className={styles.makeSection}>

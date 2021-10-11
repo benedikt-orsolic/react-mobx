@@ -8,7 +8,6 @@ import { ModelStore } from './ModelStore';
 class VehicleMakeList {
 
     makeList = [];
-    autoUpdateTimeOut = undefined;
 
     constructor() {
         makeObservable(this, {
@@ -56,7 +55,6 @@ class VehicleMakeList {
     }
 
     async updatedMake(id, requestBody) {
-        if( this.autoUpdateTimeOut === undefined ) this.autoUpdateTimeOut = setTimeout(() => {this.fetchMakeList(); this.autoUpdateTimeOut=undefined}, 5000);
         return await MakeStoreService.update(id, requestBody);
     }
 
