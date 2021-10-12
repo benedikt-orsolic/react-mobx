@@ -77,4 +77,16 @@ export class MakePageEditStore {
     internalHandelNameChange(newName) {
         this.make.name = newName
     }
+
+    useEffect() {
+        return null;
+    }
+
+    destructor() {
+        clearTimeout(this.timeOutVar);
+        let requestBody = {
+            'name': this.make.name,
+        }
+        MakeStore.updatedMake(this.make.id, requestBody);
+    }
 }

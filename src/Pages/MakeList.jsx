@@ -10,7 +10,6 @@ import { MakeStore } from '../Common/MakeStore';
 
 /** Styles */
 import styles from './VehicleMake.module.css';
-import { ModelStore } from '../Common/ModelStore';
 
 
 
@@ -18,17 +17,11 @@ import { ModelStore } from '../Common/ModelStore';
 
 export const MakeList = observer (({uiStore}) => {
 
-    const [fetchList, setFetchList] = React.useState(true)
-
     useEffect(() => {
-        if(fetchList) {
 
-            // Component did mount
-            MakeStore.fetchMakeList();
-            ModelStore.fetchModelList();
-            setFetchList(false);
-        }
-    }, [fetchList])
+        uiStore.useEffect();
+        return(() => uiStore.destructor());
+    }, [uiStore])
 
     return (
         <section className={styles.makeSection}>

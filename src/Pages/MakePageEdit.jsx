@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { observer, } from 'mobx-react';
 
 
@@ -6,6 +6,11 @@ import { observer, } from 'mobx-react';
 
 
 export const MakePageEdit = observer (({uiStore, match}) => {
+
+    useEffect(() => {
+        uiStore.useEffect();
+        return(() => uiStore.destructor());
+    }, [uiStore]);
 
     const id = match.params.id
     uiStore.setMakeId(id);

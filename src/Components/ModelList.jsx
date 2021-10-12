@@ -4,17 +4,11 @@ import { Link } from 'react-router-dom';
 import { ModelStore } from '../Common/ModelStore';
 
 export const ModelList = observer ((props) => {
-
-    const [fetchList, setFetchList] = React.useState(true)
-
     useEffect(() => {
-        if(fetchList) {
 
-            // Component did mount
-            ModelStore.fetchModelList();
-            setFetchList(false);
-        }
-    }, [fetchList])
+        // Component did mount
+        ModelStore.fetchModelList();
+    }, [])
 
 
 

@@ -88,4 +88,16 @@ export class ModelPageEditStore {
     handelMakeIdChange(event){
         this.model.makeId = event.target.value;
     }
+
+    useEffect() {
+        return null;
+    }
+
+    destructor() {
+        clearTimeout(this.timeOutVar);
+        let patchObj = {
+            'name': this.model.name,
+        }
+        ModelStore.updatedModel(this.model.id, patchObj)
+    }
 }
