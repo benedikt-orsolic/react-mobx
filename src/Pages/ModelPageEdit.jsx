@@ -24,8 +24,8 @@ export const ModelPageEdit = observer (({uiStore, match}) => {
         Name
         <input type="text" value={uiStore.getName} onChange={event => uiStore.handleNameChange(event)} /><br />
 
-        MakeId
-        <input type="number" value={uiStore.getMakeId} onChange={event => uiStore.handleMakeIdChange(event)} readOnly="readOnly" /><br />
+        ModelId
+        <input type="text" value={uiStore.getModelId} onChange={event => uiStore.handleModelIdChange(event)} readOnly="readOnly" /><br />
 
         <p>{uiStore.syncStatus}</p>
      </form>);

@@ -20,10 +20,10 @@ export const MakePageEdit = observer (({uiStore, match}) => {
     }
     return (<form>   
         Name
-        <input type="text" value={uiStore.getName} onChange={event => uiStore.handleNameChange(event)} /><br />
+        <input name="name" type="text" value={uiStore.getName} onChange={event => uiStore.handleNameChange(event)} /><br />
 
         MakeId
-        <input type="number" value={uiStore.getMakeId} onChange={event => uiStore.handleMakeIdChange(event)} readOnly="readOnly" /><br />
+        <input name="makeId" type="text" value={uiStore.getMakeId} onChange={event => uiStore.handleMakeIdChange(event)} readOnly="readOnly" /><br />
 
         <p>{uiStore.syncStatus}</p>
      </form>);
