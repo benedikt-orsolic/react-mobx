@@ -19,7 +19,7 @@ export class ModelPageEditStore {
             handelMakeIdChange: action,
 
             getName: computed,
-            getMakeId: computed,
+            getModelId: computed,
 
         });
     }
@@ -42,8 +42,8 @@ export class ModelPageEditStore {
         return this.model.name;
     }
 
-    get getMakeId() {
-        return this.model.makeId;
+    get getModelId() {
+        return this.model.id;
     }
 
     setMakeId(makeId){
@@ -76,6 +76,8 @@ export class ModelPageEditStore {
             this.timeOutVar = undefined;
         }, 1000)
     }
+
+    handleModelIdChange() { return null }
 
     changeSyncStatus(str) {
         this.syncStatus = str;

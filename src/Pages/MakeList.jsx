@@ -25,7 +25,10 @@ export const MakeList = observer (({uiStore}) => {
 
     return (
         <section className={styles.makeSection}>
-            <Link to='/make/edit/undefined' >Add new make</Link><br /> <hr />
+            {window.user.isLoggedIn ? 
+            <div><Link to='/make/edit/undefined' >Add new make</Link><br /> <hr /> </div> :
+            null}
+            
             <input type="submit" value="SortDesc" onClick={() => MakeStore.sort('descending')} />
             <input type="submit" value="SortAsc" onClick={() => MakeStore.sort('ascending')} />
             

@@ -25,8 +25,14 @@ export const ModelPage = observer (({match, PageStore}) => {
         <section>
             <h3>Description</h3>
             <p>This model is made by {PageStore.parentMake.name}</p>
-            <input type="submit" value="Delete" onClick={() => ModelStore.deleteModel(id)} />
-            <Link to={"/model/edit/" + PageStore.model.makeId + '/' + id} >Edit</Link>
+            
+
+            {window.user.isLoggedIn ? 
+            <div>
+                <input type="submit" value="Delete" onClick={() => ModelStore.deleteModel(id)} />
+                <Link to={"/model/edit/" + PageStore.model.makeId + '/' + id} >Edit</Link>
+            </div> :
+            null}
         </section>
     </section>);
 })
