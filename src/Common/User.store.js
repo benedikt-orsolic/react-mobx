@@ -7,7 +7,7 @@ import { action, computed, makeObservable, observable } from "mobx";
 
 
 /** Services */
-import { UserService } from './User.service';
+import { UserService } from './Services/User.service';
 
 
 
@@ -23,18 +23,23 @@ class UserStore {
             logIn: action,
             logOut: action,
             unsetTokenOnExpire: action,
+            internalSetToken: action,
 
             isLoggedIn: computed,
         })
     }
 
     async logIn(userName, password) {
-        this.token = await UserService.getToken(userName, password);
+        this.internalSetToken( await UserService.getToken(userName, password) );
 
         clearTimeout(this.tokenTimeOut);
 
         // Received time is 7200, for ms is too short so I assume it is in s which is about 2h
         this.tokenTimeOut = setTimeout(()=>{this.unsetTokenOnExpire()}, this.token.expires_in * 1000)
+    }
+
+    internalSetToken(token) {
+        this.token = token;
     }
 
     async logOut() {

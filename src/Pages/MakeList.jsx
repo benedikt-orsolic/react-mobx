@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { observer, } from 'mobx-react';
 import { Link } from 'react-router-dom';
 
@@ -17,9 +17,15 @@ import styles from './VehicleMake.module.css';
 
 export const MakeList = observer (({uiStore}) => {
 
+    useEffect(() => {
+
+        uiStore.useEffect();
+        return(() => uiStore.destructor());
+    }, [uiStore])
+
     return (
         <section className={styles.makeSection}>
-            <li><Link to='/make/edit/undefined' >Add new make</Link></li>
+            <Link to='/make/edit/undefined' >Add new make</Link><br /> <hr />
             <input type="submit" value="SortDesc" onClick={() => MakeStore.sort('descending')} />
             <input type="submit" value="SortAsc" onClick={() => MakeStore.sort('ascending')} />
             

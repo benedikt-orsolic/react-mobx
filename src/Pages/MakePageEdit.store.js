@@ -4,13 +4,17 @@ import { MakeStore } from '../Common/MakeStore';
 export class MakePageEditStore {
 
     make = undefined;
+    syncStatus = '';
+    timeOutVar = undefined;
 
     constructor(){
 
         makeObservable(this, {
             make: observable,
+            syncStatus: observable,
             
             internalHandelNameChange: action,
+            changeSyncStatus: action,
             setName: action,
             internalSetMake: action,
             getName: computed,
@@ -27,12 +31,12 @@ export class MakePageEditStore {
             id = newMake.id;
         }
 
-        this.internalSetMake(id);
+        this.internalSetMake(await MakeStore.getMakeById(id));
     }
 
     // async function can not be mobx action
-    internalSetMake(id) {
-        this.make = MakeStore.getMakeById(id).get();
+    internalSetMake(make) {
+        this.make = make;
     }
 
     get getName(){
@@ -46,16 +50,43 @@ export class MakePageEditStore {
 
     async handleNameChange(event){
 
-        let newName = event.target.value
+        let newName = event.target.value;
+        this.internalHandelNameChange(newName);
+        if(this.timeOutVar !== undefined) return;
 
-        let requestBody = {
-            'name': String(newName)
-        }
-        
-        if (await MakeStore.updatedMake(this.make.id, requestBody)) this.internalHandelNameChange(newName);
+        this.changeSyncStatus('Waiting for server to update');
+
+        this.timeOutVar = setTimeout(async () => {
+            
+            let requestBody = {
+                'name': this.make.name,
+            }
+
+            if(await MakeStore.updatedMake(this.make.id, requestBody)) this.changeSyncStatus('Evrything is up in the cloud');
+            else this.changeSyncStatus('Something went wrong');
+
+            this.timeOutVar = undefined;
+        }, 1000)
+
+    }
+
+    changeSyncStatus(str) {
+        this.syncStatus = str;
     }
 
     internalHandelNameChange(newName) {
         this.make.name = newName
+    }
+
+    useEffect() {
+        return null;
+    }
+
+    destructor() {
+        clearTimeout(this.timeOutVar);
+        let requestBody = {
+            'name': this.make.name,
+        }
+        MakeStore.updatedMake(this.make.id, requestBody);
     }
 }

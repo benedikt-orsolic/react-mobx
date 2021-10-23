@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { observer, } from 'mobx-react';
 
 
@@ -6,6 +6,11 @@ import { observer, } from 'mobx-react';
 
 
 export const ModelPageEdit = observer (({uiStore, match}) => {
+
+    useEffect(() => {
+        uiStore.useEffect();
+        return(() => uiStore.destructor());
+    }, [uiStore]);
 
     const id = match.params.id;
     const makeId = match.params.makeId;
@@ -21,5 +26,7 @@ export const ModelPageEdit = observer (({uiStore, match}) => {
 
         MakeId
         <input type="number" value={uiStore.getMakeId} onChange={event => uiStore.handleMakeIdChange(event)} readOnly="readOnly" /><br />
+
+        <p>{uiStore.syncStatus}</p>
      </form>);
 })

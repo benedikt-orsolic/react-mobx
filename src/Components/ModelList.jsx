@@ -1,8 +1,17 @@
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { ModelStore } from '../Common/ModelStore';
 
 export const ModelList = observer ((props) => {
+    useEffect(() => {
+
+        // Component did mount
+        ModelStore.fetchModelList();
+    }, [])
+
+
+
     return (
         <ul>{
             ModelStore.list.map( (el) => {

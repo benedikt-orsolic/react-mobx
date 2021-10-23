@@ -11,23 +11,22 @@ import { MakeStore } from '../Common/MakeStore';
 /** Styles */
 import styles from './VehicleMake.module.css';
 import { observer } from 'mobx-react';
-import { Redirect } from 'react-router';
 
 
 
-export const MakePage = observer( ({history, match}) =>  {
+export const MakePage = observer( ({history, match, PageStore}) =>  {
 
     let id = match.params.id;
-    let thisMake = MakeStore.getMakeById(id).get();
-    
-    if( thisMake === undefined ) {
-        return <Redirect to="/" />
+    PageStore.getMakeById(id);
+
+    if(PageStore.make === undefined) {
+        return (<p>We are waiting for your make to arive</p>)
     }
 
     return (
     <section className={styles.makeSection}>
-        <h2>{thisMake.name}</h2>
-        <Link to={'/model/edit/' +  thisMake.id +'/undefined'} >Add new model</Link>
+        <h2>{PageStore.make.name}</h2>
+        <Link to={'/model/edit/' +  PageStore.make.id +'/undefined'} >Add new model</Link>
         <ModelList makeId={id} />
         <input type="submit" value="Delete" onClick={() => {
             MakeStore.deleteMake(id);
