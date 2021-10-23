@@ -43,6 +43,10 @@ export class MakePageEditStore {
         return this.make.name;
     }
 
+    get getMakeId() {
+        return this.make.id;
+    }
+
     setName(name){
         this.make.name = name;
     }
@@ -69,6 +73,8 @@ export class MakePageEditStore {
         }, 1000)
 
     }
+
+    handleMakeIdChange() { return null }
 
     changeSyncStatus(str) {
         this.syncStatus = str;
