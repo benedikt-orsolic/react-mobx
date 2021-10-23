@@ -26,12 +26,20 @@ export const MakePage = observer( ({history, match, PageStore}) =>  {
     return (
     <section className={styles.makeSection}>
         <h2>{PageStore.make.name}</h2>
-        <Link to={'/model/edit/' +  PageStore.make.id +'/undefined'} >Add new model</Link>
+        {window.user.isLoggedIn ? 
+            <div><Link to={'/model/edit/' +  PageStore.make.id +'/undefined'} >Add new model</Link><br /> <hr /> </div> :
+            null}
         <ModelList makeId={id} />
-        <input type="submit" value="Delete" onClick={() => {
-            MakeStore.deleteMake(id);
-            history.push('/');
-        }} />
-        <Link to={"/make/edit/" + id} >Edit</Link>
+        
+
+        {window.user.isLoggedIn ? 
+            <div>
+                <input type="submit" value="Delete" onClick={() => {
+                    MakeStore.deleteMake(id);
+                    history.push('/');
+                }} />
+                <Link to={"/make/edit/" + id} >Edit</Link>
+            </div> :
+            null}
     </section>)
 })
